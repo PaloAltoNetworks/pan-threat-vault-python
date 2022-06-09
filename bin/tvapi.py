@@ -269,8 +269,9 @@ def print_rate_limits(headers):
         seconds = headers.get('x-ratelimit-reset')
         if seconds is not None:
             try:
-                seconds = time.strftime('%Y-%m-%dT%H:%M:%SZ',
-                                        time.gmtime(int(seconds)))
+                x = time.strftime('%Y-%m-%dT%H:%M:%SZ',
+                                  time.gmtime(int(seconds)))
+                seconds = '%s (%s)' % (seconds, x)
             except ValueError:
                 pass
         print('RateLimit-Reset:', seconds)
