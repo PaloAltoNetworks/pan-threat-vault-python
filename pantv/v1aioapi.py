@@ -26,6 +26,7 @@ from . import (mixin, ApiError, ArgsError,
                title, __version__)
 
 
+DEFAULT_URL = 'https://tpp.tpcloud.paloaltonetworks.com'
 BASE_PATH = '/service/publicapi/v1'
 
 
@@ -45,7 +46,7 @@ class ThreatVaultApi(mixin.AioMixin):
 
         self.api_version = api_version
         if url is None:
-            self.url = 'https://tpp.tpcloud.paloaltonetworks.com'
+            self.url = DEFAULT_URL
         else:
             self.url = url
         try:
