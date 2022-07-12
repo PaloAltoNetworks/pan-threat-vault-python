@@ -74,32 +74,32 @@ DESCRIPTION
  ThreatVaultApi provides an interface to the following Threat Vault
  API requests:
 
- +-----------------------------------+-----------------------+-----------------------------------------+
- | Request                           | ThreatVaultApi Method | API Resource Path                       |
- +===================================+=======================+=========================================+
- | | Get threat prevention metadata  | threats()             | /service/publicapi/v1/threats           |
- | | information                     |                       |                                         |
- +-----------------------------------+-----------------------+-----------------------------------------+
- | | Get application and threat      | release_notes()       | /service/publicapi/v1/release-notes     |
- | | release note information        |                       |                                         |
- +-----------------------------------+-----------------------+-----------------------------------------+
- | | Get Advanced Threat Prevention  | atp_reports()         | /service/publicapi/v1/atp/reports       |
- | | threat report                   |                       |                                         |
- +-----------------------------------+-----------------------+-----------------------------------------+
- | | Get Advanced Threat Prevention  | atp_reports_pcaps()   | /service/publicapi/v1/atp/reports/pcaps |
- | | threat pcap                     |                       |                                         |
- +-----------------------------------+-----------------------+-----------------------------------------+
+ +-----------------------------------+-----------------------+-------------------------------+
+ | Request                           | ThreatVaultApi Method | API Resource Path             |
+ +===================================+=======================+===============================+
+ | | Get threat prevention metadata  | threats()             | /service/v1/threats           |
+ | | information                     |                       |                               |
+ +-----------------------------------+-----------------------+-------------------------------+
+ | | Get application and threat      | release_notes()       | /service/v1/release-notes     |
+ | | release note information        |                       |                               |
+ +-----------------------------------+-----------------------+-------------------------------+
+ | | Get Advanced Threat Prevention  | atp_reports()         | /service/v1/atp/reports       |
+ | | threat report                   |                       |                               |
+ +-----------------------------------+-----------------------+-------------------------------+
+ | | Get Advanced Threat Prevention  | atp_reports_pcaps()   | /service/v1/atp/reports/pcaps |
+ | | threat pcap                     |                       |                               |
+ +-----------------------------------+-----------------------+-------------------------------+
 
  Convenience methods implemented as generator functions are provided,
  which can be used to process all items when response paging can
  occur, and which can automatically retry requests when rate limiting
  occurs:
 
- =========================   ================================
+ =========================   ===================
  ThreatVaultApi Method       API Resource Path
- =========================   ================================
- threats_all()               /service/publicapi/v1/threats
- =========================   ================================
+ =========================   ===================
+ threats_all()               /service/v1/threats
+ =========================   ===================
 
  ThreatVaultApi methods are implemented as both functions, and
  coroutines for use with the

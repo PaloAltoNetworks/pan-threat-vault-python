@@ -312,7 +312,7 @@ EXAMPLES
   $ tvapi.py -F /etc/tv/keys-acmecorp.json --debug 1 --threats --id 13200 -j
   Using selector: KqueueSelector
   api_version: v1, 0x0100
-  GET https://tpp.tpcloud.paloaltonetworks.com/service/publicapi/v1/threats?id=13200 200 OK 661
+  GET https://tpp.tpcloud.paloaltonetworks.com/service/v1/threats?id=13200 200 OK 661
   threats: 200 OK 661
   {
       "count": 1,
@@ -360,7 +360,7 @@ EXAMPLES
   > --note-version 8524 -j > note-8524.json
   Using selector: KqueueSelector
   api_version: v1, 0x0100
-  GET https://tpp.tpcloud.paloaltonetworks.com/service/publicapi/v1/release-notes?type=content&version=8524 200 OK 48014
+  GET https://tpp.tpcloud.paloaltonetworks.com/service/v1/release-notes?type=content&version=8524 200 OK 48014
   release-notes: 200 OK 48014
 
   $ head note-8524.json 
@@ -381,11 +381,11 @@ EXAMPLES
   $ tvapi.py -F /etc/tv/keys-acmecorp.json --debug 1 --threats --type ips --all -j >threats-all.json
   Using selector: KqueueSelector
   api_version: v1, 0x0100
-  GET https://tpp.tpcloud.paloaltonetworks.com/service/publicapi/v1/threats?type=ips&offset=0&limit=10000 200 OK 7714517
+  GET https://tpp.tpcloud.paloaltonetworks.com/service/v1/threats?type=ips&offset=0&limit=10000 200 OK 7714517
   count 26864 current 10000 total 10000
-  GET https://tpp.tpcloud.paloaltonetworks.com/service/publicapi/v1/threats?type=ips&offset=10000&limit=10000 200 OK 9286942
+  GET https://tpp.tpcloud.paloaltonetworks.com/service/v1/threats?type=ips&offset=10000&limit=10000 200 OK 9286942
   count 26864 current 10000 total 20000
-  GET https://tpp.tpcloud.paloaltonetworks.com/service/publicapi/v1/threats?type=ips&offset=20000&limit=10000 200 OK 5583902
+  GET https://tpp.tpcloud.paloaltonetworks.com/service/v1/threats?type=ips&offset=20000&limit=10000 200 OK 5583902
   count 26864 current 6864 total 26864
   closing aiohttp session
 
@@ -398,7 +398,7 @@ EXAMPLES
   > -jJ 'data[?not_null(cve)].cve'
   Using selector: KqueueSelector
   api_version: v1, 0x0100
-  GET https://tpp.tpcloud.paloaltonetworks.com/service/publicapi/v1/threats?offset=0&limit=10000&fromReleaseDate=2022-03-22&toReleaseDate=2022-03-23 200 OK 8689
+  GET https://tpp.tpcloud.paloaltonetworks.com/service/v1/threats?offset=0&limit=10000&fromReleaseDate=2022-03-22&toReleaseDate=2022-03-23 200 OK 8689
   count 9 current 9 total 9
   [
       [
