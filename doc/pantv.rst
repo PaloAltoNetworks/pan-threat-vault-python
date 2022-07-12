@@ -148,7 +148,7 @@ class pantv.ThreatVaultApi(\*, api_version=None, url=None, api_key=None, verify=
   The default is "\https://tpp.tpcloud.paloaltonetworks.com".
 
  **api_key**
-  The ``x-tpp-api-key`` request header value used to authenticate API
+  The ``x-api-key`` request header value used to authenticate API
   requests.  This is the Threat Prevention API key available on the
   customer support portal under *Assets->API Key Management*.
 
