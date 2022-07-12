@@ -27,7 +27,7 @@ from . import (mixin, ApiError, ArgsError,
 
 
 DEFAULT_URL = 'https://tpp.tpcloud.paloaltonetworks.com'
-BASE_PATH = '/service/publicapi/v1'
+BASE_PATH = '/service/v1'
 
 
 class ThreatVaultApi(mixin.AioMixin):
