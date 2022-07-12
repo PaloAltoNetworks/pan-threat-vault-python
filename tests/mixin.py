@@ -2,12 +2,24 @@ import asyncio
 import json
 import logging
 import os
+import sys
 
 import pantv
 
 
 class _MixinShared:
     def tvapi(self):
+        def opt_verify(x):
+            if x == 'yes':
+                return True
+            elif x == 'no':
+                return False
+            elif os.path.exists(x):
+                return x
+            else:
+                print('Invalid verify option:', x, file=sys.stderr)
+                sys.exit(1)
+
         path = os.getenv('PANTV_KEYS')
         if path is None:
             raise RuntimeError('no PANTV_KEYS in environment')
@@ -15,8 +27,9 @@ class _MixinShared:
             x = json.load(f)
         kwargs = {
             'api_key': x['api-key'],
-            'verify': x['verify'],
         }
+        if 'verify' in x:
+            kwargs['verify'] = opt_verify(x['verify'])
 
         x = os.getenv('PANTV_DEBUG')
         if x is not None:
