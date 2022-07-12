@@ -23,7 +23,7 @@ import ssl
 
 from . import ArgsError, DEBUG1, DEBUG2, DEBUG3
 
-API_KEY_HEADER = 'x-tpp-api-key'
+API_KEY_HEADER = 'x-api-key'
 
 
 class _MixinShared:
