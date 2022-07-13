@@ -298,7 +298,7 @@ threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=No
  **retry**
   Retry the request indefinitely when a request is rate limited.  When
   a HTTP 429 status code is returned, the function will suspend
-  execution until the time specified in the ``x-ratelimit-reset``
+  execution until the time specified in the ``x-minute-ratelimit-reset``
   response header, then retry the request.  Coroutine methods use
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
@@ -347,7 +347,7 @@ release_notes(\*, noteType=None, version=None, query_string=None, retry=False)
  **retry**
   Retry the request indefinitely when a request is rate limited.  When
   a HTTP 429 status code is returned, the function will suspend
-  execution until the time specified in the ``x-ratelimit-reset``
+  execution until the time specified in the ``x-minute-ratelimit-reset``
   response header, then retry the request.  Coroutine methods use
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
@@ -376,7 +376,7 @@ atp_reports(\*, report_id=None, query_string=None, retry=False)
  **retry**
   Retry the request indefinitely when a request is rate limited.  When
   a HTTP 429 status code is returned, the function will suspend
-  execution until the time specified in the ``x-ratelimit-reset``
+  execution until the time specified in the ``x-minute-ratelimit-reset``
   response header, then retry the request.  Coroutine methods use
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
@@ -404,7 +404,7 @@ atp_reports_pcaps(\*, report_id=None, query_string=None, retry=False)
  **retry**
   Retry the request indefinitely when a request is rate limited.  When
   a HTTP 429 status code is returned, the function will suspend
-  execution until the time specified in the ``x-ratelimit-reset``
+  execution until the time specified in the ``x-minute-ratelimit-reset``
   response header, then retry the request.  Coroutine methods use
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
