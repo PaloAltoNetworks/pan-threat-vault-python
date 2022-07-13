@@ -263,18 +263,30 @@ def print_status(name, resp):
 
 
 def print_rate_limits(headers):
+    limits = [
+        'X-Minute-RateLimit-Limit',
+        'X-Minute-RateLimit-Remaining',
+        'X-Minute-RateLimit-Reset',
+        'X-Day-RateLimit-Limit',
+        'X-Day-RateLimit-Remaining',
+        'X-Day-RateLimit-Reset',
+    ]
+
     if headers is not None:
-        print('RateLimit-Limit:', headers.get('x-ratelimit-limit'))
-        print('RateLimit-Remaining:', headers.get('x-ratelimit-remaining'))
-        seconds = headers.get('x-ratelimit-reset')
-        if seconds is not None:
-            try:
-                x = time.strftime('%Y-%m-%dT%H:%M:%SZ',
-                                  time.gmtime(int(seconds)))
-                seconds = '%s (%s)' % (seconds, x)
-            except ValueError:
-                pass
-        print('RateLimit-Reset:', seconds)
+        for limit in limits:
+            value = headers.get(limit)
+            if value is None:
+                continue
+            friendly = limit[2:]
+            if friendly.endswith('-Reset'):
+                try:
+                    x = time.strftime('%Y-%m-%dT%H:%M:%SZ',
+                                      time.gmtime(int(value)))
+                    value = '%s (%s)' % (value, x)
+                except ValueError:
+                    pass
+
+            print('%s: %s' % (friendly, value))
 
 
 def print_response(options, resp):
