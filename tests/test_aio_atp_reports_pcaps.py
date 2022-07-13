@@ -14,8 +14,8 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
         resp = await self.api.atp_reports_pcaps(report_id=x)
         self.assertEqual(resp.status, 400)
         x = await resp.json()
-        self.assertEqual(x['message'],
-                         "'report_id' is not alphanumeric")
+        msg = 'id: Value is invalid.'
+        self.assertEqual(x['message'], msg)
         self.assertFalse(x['success'])
 
     async def test_03(self):

@@ -14,8 +14,8 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         resp = self.api.atp_reports_pcaps(report_id=x)
         self.assertEqual(resp.status_code, 400)
         x = resp.json()
-        self.assertEqual(x['message'],
-                         "'report_id' is not alphanumeric")
+        msg = 'id: Value is invalid.'
+        self.assertEqual(x['message'], msg)
         self.assertFalse(x['success'])
 
     def test_03(self):
