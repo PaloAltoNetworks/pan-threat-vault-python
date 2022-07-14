@@ -20,7 +20,7 @@ import logging
 import re
 import sys
 
-__version__ = '0.0.0.dev0'
+__version__ = '0.0.0.dev1'
 title = 'pan-threat-vault-python'
 
 _default_api_version = (1)
