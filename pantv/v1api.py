@@ -73,25 +73,27 @@ class ThreatVaultApi(mixin.Mixin):
                 timeout_retries -= 1
             else:
                 if retry and resp.status_code == 429:
+                    now = time.time()
                     day_remaining = \
                         resp.headers.get('x-day-ratelimit-remaining')
-                    if day_remaining is None or day_remaining == 0:
-                        return resp
+                    if day_remaining is None or day_remaining == '0':
+                        break
+
                     minute_reset = \
                         resp.headers.get('x-minute-ratelimit-reset')
                     if minute_reset is None:
-                        return resp
-                    now = time.time()
+                        break
                     try:
                         minute_reset = int(minute_reset)
                     except ValueError as e:
                         self._log(DEBUG1, '%s', e)
-                        return resp
+                        break
+
                     if minute_reset > now:
                         rate_limit_delay = minute_reset - now
                         self._log(DEBUG2, 'status code 429, sleep %.2fs',
                                   rate_limit_delay)
-                    time.sleep(rate_limit_delay)
+                        time.sleep(rate_limit_delay)
                 else:
                     break
 
