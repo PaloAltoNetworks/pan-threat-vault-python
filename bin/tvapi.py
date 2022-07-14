@@ -205,7 +205,7 @@ async def aiorequest(api, options):
 
         if options['all']:
             obj = {'data': []}
-            async for ok, x in api.threats_all(**kwargs):
+            async for ok, x in api.threats_all(retry=True, **kwargs):
                 if ok:
                     obj['data'].append(x)
                 else:
