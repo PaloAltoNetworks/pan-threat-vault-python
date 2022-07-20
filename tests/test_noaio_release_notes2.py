@@ -13,7 +13,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertFalse(x['success'])
 
     def test_02(self):
-        resp = self.api.release_notes(noteType='x')
+        resp = self.api.release_notes(type='x')
         self.assertEqual(resp.status_code, 400)
         x = resp.json()
         msg = 'type: Value is invalid.'
@@ -29,7 +29,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertFalse(x['success'])
 
     def test_04(self):
-        resp = self.api.release_notes(noteType='content')
+        resp = self.api.release_notes(type='content')
         self.assertEqual(resp.status_code, 400)
         x = resp.json()
         msg = 'version: This field is required.'
@@ -37,7 +37,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertFalse(x['success'])
 
     def test_05(self):
-        resp = self.api.release_notes(noteType='content',
+        resp = self.api.release_notes(type='content',
                                       version='0001')
         self.assertEqual(resp.status_code, 404)
         x = resp.json()

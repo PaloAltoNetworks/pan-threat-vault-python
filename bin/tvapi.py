@@ -135,7 +135,7 @@ def request(api, options):
         kwargs = {
             'id': options['id'],
             'name': options['name'],
-            'signatureType': options['type'],
+            'type': options['type'],
             'offset': options['offset'],
             'limit': options['limit'],
             'query_string': options['query_string_obj'],
@@ -169,7 +169,7 @@ def request(api, options):
 
     elif options['release-notes']:
         resp = api.release_notes(
-            noteType=options['type'],
+            type=options['type'],
             version=options['note-version'],
             query_string=options['query_string_obj'])
         print_status('release-notes', resp)
@@ -178,7 +178,7 @@ def request(api, options):
 
     elif options['atp-reports']:
         resp = api.atp_reports(
-            report_id=options['id'],
+            id=options['id'],
             query_string=options['query_string_obj'])
         print_status('atp-reports', resp)
         print_response(options, resp)
@@ -186,7 +186,7 @@ def request(api, options):
 
     elif options['atp-pcaps']:
         resp = api.atp_reports_pcaps(
-            report_id=options['id'],
+            id=options['id'],
             query_string=options['query_string_obj'])
         print_status('atp-pcaps', resp)
         print_response(options, resp)
@@ -198,7 +198,7 @@ async def aiorequest(api, options):
         kwargs = {
             'id': options['id'],
             'name': options['name'],
-            'signatureType': options['type'],
+            'type': options['type'],
             'offset': options['offset'],
             'limit': options['limit'],
             'query_string': options['query_string_obj'],
@@ -223,7 +223,7 @@ async def aiorequest(api, options):
 
     elif options['release-notes']:
         resp = await api.release_notes(
-            noteType=options['type'],
+            type=options['type'],
             version=options['note-version'],
             query_string=options['query_string_obj'])
         print_status('release-notes', resp)
@@ -232,7 +232,7 @@ async def aiorequest(api, options):
 
     elif options['atp-reports']:
         resp = await api.atp_reports(
-            report_id=options['id'],
+            id=options['id'],
             query_string=options['query_string_obj'])
         print_status('atp-reports', resp)
         await aioprint_response(options, resp)
@@ -240,7 +240,7 @@ async def aiorequest(api, options):
 
     elif options['atp-pcaps']:
         resp = await api.atp_reports_pcaps(
-            report_id=options['id'],
+            id=options['id'],
             query_string=options['query_string_obj'])
         print_status('atp-pcaps', resp)
         await aioprint_response(options, resp)

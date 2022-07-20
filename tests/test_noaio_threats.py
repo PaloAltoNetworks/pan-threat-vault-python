@@ -49,7 +49,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertGreater(x['count'], 0)
 
     def test_05(self):
-        resp = self.api.threats(signatureType='ips')
+        resp = self.api.threats(type='ips')
         self.assertEqual(resp.status_code, 200)
         x = resp.json()
         self.assertEqual(x['message'], 'Successful')
@@ -62,7 +62,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertEqual(total, 10000)
 
     def test_06(self):
-        resp = self.api.threats(signatureType='ips',
+        resp = self.api.threats(type='ips',
                                 limit=100)
         self.assertEqual(resp.status_code, 200)
         x = resp.json()
@@ -76,14 +76,14 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertEqual(total, 100)
 
     def test_07(self):
-        resp = self.api.threats(signatureType='ips',
+        resp = self.api.threats(type='ips',
                                 limit=1)
         self.assertEqual(resp.status_code, 200)
         x = resp.json()
         count = x['count']
 
         total = 0
-        for result, x in self.api.threats_all(signatureType='ips'):
+        for result, x in self.api.threats_all(type='ips'):
             if not result:
                 self.assertTrue(result, '%s %s' % (x.status_code, x.reason))
             total += 1

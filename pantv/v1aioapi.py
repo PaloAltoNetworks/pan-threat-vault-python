@@ -37,6 +37,7 @@ class ThreatVaultApi(mixin.AioMixin):
                  api_key=None,
                  verify=None,
                  timeout=None):
+
         self._log = logging.getLogger(__name__).log
         self._log(DEBUG2, '%s: %s, ThreatVaultApi: %s',
                   title, __version__, api_version)
@@ -116,7 +117,7 @@ class ThreatVaultApi(mixin.AioMixin):
                       toReleaseVersion=None,
                       releaseDate=None,
                       releaseVersion=None,
-                      signatureType=None,
+                      type=None,
                       offset=None,
                       limit=None,
                       query_string=None,
@@ -129,10 +130,7 @@ class ThreatVaultApi(mixin.AioMixin):
         for x in args:
             if (x not in ('self', 'query_string', 'retry') and
                args[x] is not None):
-                if x == 'signatureType':
-                    params['type'] = args[x]
-                else:
-                    params[x] = args[x]
+                params[x] = args[x]
 
         if query_string is not None:
             params.update(query_string)
@@ -196,7 +194,7 @@ class ThreatVaultApi(mixin.AioMixin):
                 yield False, resp
 
     async def release_notes(self, *,
-                            noteType=None,
+                            type=None,
                             version=None,
                             query_string=None,
                             retry=False):
@@ -208,10 +206,7 @@ class ThreatVaultApi(mixin.AioMixin):
         for x in args:
             if (x not in ('self', 'query_string', 'retry') and
                args[x] is not None):
-                if x == 'noteType':
-                    params['type'] = args[x]
-                else:
-                    params[x] = args[x]
+                params[x] = args[x]
 
         if query_string is not None:
             params.update(query_string)
@@ -229,7 +224,7 @@ class ThreatVaultApi(mixin.AioMixin):
         return resp
 
     async def atp_reports(self, *,
-                          report_id=None,
+                          id=None,
                           query_string=None,
                           retry=False):
         path = BASE_PATH + '/atp/reports'
@@ -244,12 +239,12 @@ class ThreatVaultApi(mixin.AioMixin):
             'ssl': self.ssl,
             'params': params,
         }
-        if report_id is not None:
-            if isinstance(report_id, (bytes, str, bytearray)):
-                kwargs['data'] = report_id
+        if id is not None:
+            if isinstance(id, (bytes, str, bytearray)):
+                kwargs['data'] = id
                 kwargs['headers'] = {'content-type': 'application/json'}
             else:
-                kwargs['json'] = {'id': report_id}
+                kwargs['json'] = {'id': id}
 
         resp = await self._request_retry(retry=retry,
                                          func=self.session.post,
@@ -258,15 +253,15 @@ class ThreatVaultApi(mixin.AioMixin):
         return resp
 
     async def atp_reports_pcaps(self, *,
-                                report_id=None,
+                                id=None,
                                 query_string=None,
                                 retry=False):
         path = BASE_PATH + '/atp/reports/pcaps'
         url = self.url + path
 
         params = {}
-        if report_id is not None:
-            params['id'] = report_id
+        if id is not None:
+            params['id'] = id
 
         if query_string is not None:
             params.update(query_string)

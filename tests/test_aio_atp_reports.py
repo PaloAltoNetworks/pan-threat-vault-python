@@ -10,7 +10,7 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
 
     async def test_02(self):
         x = ['#']
-        resp = await self.api.atp_reports(report_id=x)
+        resp = await self.api.atp_reports(id=x)
         self.assertEqual(resp.status, 400)
         x = await resp.json()
         msg = 'id: Value is invalid.'
@@ -19,14 +19,14 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
 
     async def test_03(self):
         x = ['abcd0123']
-        resp = await self.api.atp_reports(report_id=x)
+        resp = await self.api.atp_reports(id=x)
         self.assertEqual(resp.status, 404)
         x = await resp.json()
         self.assertFalse(x['success'])
 
     async def test_04(self):
         x = 'x-invalid-json'
-        resp = await self.api.atp_reports(report_id=x)
+        resp = await self.api.atp_reports(id=x)
         self.assertEqual(resp.status, 400)
         x = await resp.json()
         msg = 'Valid JSON object is required.'
@@ -35,7 +35,7 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
 
     async def test_05(self):
         x = '{"id": ["abcd0123"]}'
-        resp = await self.api.atp_reports(report_id=x)
+        resp = await self.api.atp_reports(id=x)
         self.assertEqual(resp.status, 404)
         x = await resp.json()
         self.assertFalse(x['success'])

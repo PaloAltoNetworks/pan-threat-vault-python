@@ -6,7 +6,7 @@ from . import mixin
 class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
     async def test_01(self):
         version = '8549-7323'
-        resp = await self.api.release_notes(noteType='content',
+        resp = await self.api.release_notes(type='content',
                                             version=version)
         self.assertEqual(resp.status, 200)
         x = await resp.json()

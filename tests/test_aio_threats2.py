@@ -33,7 +33,7 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
         self.assertFalse(x['success'])
 
     async def test_05(self):
-        resp = await self.api.threats(signatureType='x')
+        resp = await self.api.threats(type='x')
         self.assertEqual(resp.status, 400)
         x = await resp.json()
         msg = 'type: Value is invalid.'

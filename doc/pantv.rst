@@ -53,7 +53,7 @@ SYNOPSIS
 
      try:
          async with pantv.ThreatVaultApi(**kwargs) as api:
-             async for ok, x in api.threats_all(signatureType='spyware'):
+             async for ok, x in api.threats_all(type='spyware'):
                  if ok:
                      print(x)
                  else:
@@ -232,8 +232,8 @@ pantv.ThreatVaultApi Method Return Value
 pantv.ThreatVaultApi Methods
 ----------------------------
 
-threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=None, fromReleaseVersion=None, toReleaseVersion=None, releaseDate=None, releaseVersion=None,  signatureType=None, offset=None, limit=None, query_string=None, retry=False)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=None, fromReleaseVersion=None, toReleaseVersion=None, releaseDate=None, releaseVersion=None,  type=None, offset=None, limit=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``threats()`` method performs the ``/threats`` API request to get
  threat prevention metadata information.
@@ -272,7 +272,7 @@ threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=No
  **releaseVersion**
   Content release version.
 
- **signatureType**
+ **type**
   Signature type:
 
    **ips** - return all IPS signature metadata
@@ -325,13 +325,13 @@ threats_all()
      ``spyware`` or ``vulnerability`` list
    - **status** is False: HTTP client library response object
 
-release_notes(\*, noteType=None, version=None, query_string=None, retry=False)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+release_notes(\*, type=None, version=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``release_notes()`` method performs the ``/release-notes`` API
  request to get application and threat release note information.
 
- **noteType**
+ **type**
   Release note type:
 
    **content**
@@ -352,17 +352,17 @@ release_notes(\*, noteType=None, version=None, query_string=None, retry=False)
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
 
-atp_reports(\*, report_id=None, query_string=None, retry=False)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atp_reports(\*, id=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``atp_reports()`` method performs the ``/atp/reports`` API
  request to get an Advanced Threat Prevention threat report.
 
- **report_id**
+ **id**
   Advanced Threat Prevention report ID.  Multiple report IDs can be
   specified as a list/array of hexadecimal strings.
 
-  **report_id** can be:
+  **id** can be:
 
    a Python list
 
@@ -381,14 +381,14 @@ atp_reports(\*, report_id=None, query_string=None, retry=False)
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
 
-atp_reports_pcaps(\*, report_id=None, query_string=None, retry=False)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atp_reports_pcaps(\*, id=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``atp_pcaps()`` method performs the ``/atp/reports/pcaps`` API
  request to get the packet capture file for an Advanced Threat
  Prevention threat.
 
- **report_id**
+ **id**
   Advanced Threat Prevention report ID.  A single report ID can be
   specified, which is a hexadecimal string.
 

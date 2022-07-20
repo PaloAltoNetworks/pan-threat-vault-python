@@ -10,7 +10,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
 
     def test_02(self):
         x = ['#']
-        resp = self.api.atp_reports(report_id=x)
+        resp = self.api.atp_reports(id=x)
         self.assertEqual(resp.status_code, 400)
         x = resp.json()
         msg = 'id: Value is invalid.'
@@ -19,14 +19,14 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
 
     def test_03(self):
         x = ['abcd0123']
-        resp = self.api.atp_reports(report_id=x)
+        resp = self.api.atp_reports(id=x)
         self.assertEqual(resp.status_code, 404)
         x = resp.json()
         self.assertFalse(x['success'])
 
     def test_04(self):
         x = 'x-invalid-json'
-        resp = self.api.atp_reports(report_id=x)
+        resp = self.api.atp_reports(id=x)
         self.assertEqual(resp.status_code, 400)
         x = resp.json()
         msg = 'Valid JSON object is required.'
@@ -35,7 +35,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
 
     def test_05(self):
         x = '{"id": ["abcd0123"]}'
-        resp = self.api.atp_reports(report_id=x)
+        resp = self.api.atp_reports(id=x)
         self.assertEqual(resp.status_code, 404)
         x = resp.json()
         self.assertFalse(x['success'])

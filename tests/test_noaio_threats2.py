@@ -33,7 +33,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertFalse(x['success'])
 
     def test_05(self):
-        resp = self.api.threats(signatureType='x')
+        resp = self.api.threats(type='x')
         self.assertEqual(resp.status_code, 400)
         x = resp.json()
         msg = 'type: Value is invalid.'
