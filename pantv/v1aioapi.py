@@ -23,10 +23,10 @@ import time
 
 from . import (mixin, ApiError, ArgsError,
                DEBUG1, DEBUG2, DEBUG3,
-               title, __version__)
+               title, __version__,
+               DEFAULT_URL)
 
 
-DEFAULT_URL = 'https://tpp.tpcloud.paloaltonetworks.com'
 BASE_PATH = '/service/v1'
 
 

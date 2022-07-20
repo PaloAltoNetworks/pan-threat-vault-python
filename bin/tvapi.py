@@ -39,7 +39,8 @@ sys.path[:0] = [os.path.join(libpath, os.pardir)]
 
 from pantv import (ThreatVaultApi, ApiError, ArgsError,
                    DEBUG1, DEBUG2, DEBUG3,
-                   title, DEFAULT_API_VERSION, __version__)
+                   title, DEFAULT_API_VERSION, __version__,
+                   DEFAULT_URL)
 
 INDENT = 4
 
@@ -586,7 +587,7 @@ def usage():
     --limit num              number of items to return
     -Q json                  URL query string (multiple -Q's allowed)
     --url url                API URL
-                             default https://tpp.tpcloud.paloaltonetworks.com
+                             default %s
     --verify opt             SSL server verify option: yes|no|path
     --aio                    Use asyncio (default)
     --noaio                  Don't use asyncio
@@ -605,7 +606,7 @@ def usage():
     --help                   display usage
 '''
     print(usage % (os.path.basename(sys.argv[0]),
-                   DEFAULT_API_VERSION), end='')
+                   DEFAULT_URL, DEFAULT_API_VERSION), end='')
 
 
 if __name__ == '__main__':

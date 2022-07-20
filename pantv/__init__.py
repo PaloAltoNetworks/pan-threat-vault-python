@@ -26,6 +26,8 @@ title = 'pan-threat-vault-python'
 _default_api_version = (1)
 DEFAULT_API_VERSION = 'v%d' % _default_api_version
 
+DEFAULT_URL = 'https://api.threatvault.paloaltonetworks.com'
+
 DEBUG1 = logging.DEBUG
 DEBUG2 = DEBUG1 - 1
 DEBUG3 = DEBUG2 - 1
