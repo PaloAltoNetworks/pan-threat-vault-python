@@ -193,6 +193,39 @@ class ThreatVaultApi(mixin.AioMixin):
             else:
                 yield False, resp
 
+    async def threats_history(self, *,
+                              type=None,
+                              id=None,
+                              order=None,
+                              offset=None,
+                              limit=None,
+                              query_string=None,
+                              retry=False):
+        args = locals()
+        path = BASE_PATH + '/threats/history'
+        url = self.url + path
+
+        params = {}
+        for x in args:
+            if (x not in ('self', 'query_string', 'retry') and
+               args[x] is not None):
+                params[x] = args[x]
+
+        if query_string is not None:
+            params.update(query_string)
+
+        kwargs = {
+            'url': url,
+            'ssl': self.ssl,
+            'params': params,
+        }
+
+        resp = await self._request_retry(retry=retry,
+                                         func=self.session.get,
+                                         **kwargs)
+
+        return resp
+
     async def release_notes(self, *,
                             type=None,
                             version=None,

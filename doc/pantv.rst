@@ -80,6 +80,9 @@ DESCRIPTION
  | | Get threat prevention metadata  | threats()             | /service/v1/threats           |
  | | information                     |                       |                               |
  +-----------------------------------+-----------------------+-------------------------------+
+ | | Get threat content release and  | threats_history()     | /service/v1/threats/history   |
+ | | version history                 |                       |                               |
+ +-----------------------------------+-----------------------+-------------------------------+
  | | Get application and threat      | release_notes()       | /service/v1/release-notes     |
  | | release note information        |                       |                               |
  +-----------------------------------+-----------------------+-------------------------------+
@@ -324,6 +327,52 @@ threats_all()
    - **status** is True: an object in the response ``fileformat``,
      ``spyware`` or ``vulnerability`` list
    - **status** is False: HTTP client library response object
+
+threats_history(\*, type=None, id=None, order=None, offset=None, limit=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ The ``threats_history()`` method performs the ``/threats/history``
+ API request to get threat content release and version history for a
+ threat signature ID.
+
+ **type**
+  Signature type:
+
+   **antivirus** - return anti-virus release and version history
+
+   **wildfire** - return WildFire release and version history
+
+ **id**
+  Threat signature ID number.
+
+ **order**
+  Sort order for results:
+
+   **asc** - ascending order (default)
+
+   **desc** - descending order
+
+  The ``version`` field is used to sort the results.
+
+ **offset**
+  Numeric offset used for response paging.  The default offset is 0.
+
+ **limit**
+  Numeric number of items to return in a response.  The default
+  limit is 10,000 and the maximum is 10,000.
+
+ **query_string**
+  Dictionary of key/value pairs to be sent as additional parameters in
+  the query string of the request.  This can be used to specify API
+  request parameters not supported by the class method.
+
+ **retry**
+  Retry the request indefinitely when a request is rate limited.  When
+  a HTTP 429 status code is returned, the function will suspend
+  execution until the time specified in the ``x-minute-ratelimit-reset``
+  response header, then retry the request.  Coroutine methods use
+  ``asyncio.sleep()`` to suspend and normal methods use
+  ``time.sleep()``.
 
 release_notes(\*, type=None, version=None, query_string=None, retry=False)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

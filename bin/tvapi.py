@@ -167,6 +167,18 @@ def request(api, options):
             print_response(options, resp)
             resp.raise_for_status()
 
+    elif options['threats_history']:
+        id_ = options['id'][0] if options['id'] is not None else None
+        resp = api.threats_history(
+            type=options['type'],
+            id=id_,
+            offset=options['offset'],
+            limit=options['limit'],
+            query_string=options['query_string_obj'])
+        print_status('threats-history', resp)
+        print_response(options, resp)
+        resp.raise_for_status()
+
     elif options['release-notes']:
         resp = api.release_notes(
             type=options['type'],
@@ -220,6 +232,18 @@ async def aiorequest(api, options):
             print_status('threats', resp)
             await aioprint_response(options, resp)
             resp.raise_for_status()
+
+    elif options['threats_history']:
+        id_ = options['id'][0] if options['id'] is not None else None
+        resp = await api.threats_history(
+            type=options['type'],
+            id=id_,
+            offset=options['offset'],
+            limit=options['limit'],
+            query_string=options['query_string_obj'])
+        print_status('threats-history', resp)
+        await aioprint_response(options, resp)
+        resp.raise_for_status()
 
     elif options['release-notes']:
         resp = await api.release_notes(
@@ -390,6 +414,7 @@ def parse_opts():
         'url': None,
         'api-key': None,
         'threats': False,
+        'threats_history': False,
         'release-notes': False,
         'atp-reports': False,
         'atp-pcaps': False,
@@ -419,7 +444,7 @@ def parse_opts():
     long_options = [
         'help', 'version', 'debug=', 'dtime',
         'api-version=', 'url=', 'api-key=',
-        'threats', 'release-notes',
+        'threats', 'threats-history', 'release-notes',
         'atp-reports', 'atp-pcaps',
         'all', 'id=', 'name=', 'type=', 'note-version=',
         'offset=', 'limit=',
@@ -454,6 +479,8 @@ def parse_opts():
             options['api-key'] = arg
         elif opt == '--threats':
             options['threats'] = True
+        elif opt == '--threats-history':
+            options['threats_history'] = True
         elif opt == '--release-notes':
             options['release-notes'] = True
         elif opt == '--atp-reports':
@@ -575,6 +602,7 @@ def usage():
     usage = '''%s [options]
     --api-key key            API key
     --threats                threats API request
+    --threats-history        threats release history API request
     --release-notes          release-notes API request
     --atp-reports            ATP reports API request
     --atp-pcaps              ATP reports pcaps API request

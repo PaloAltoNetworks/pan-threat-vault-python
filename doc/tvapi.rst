@@ -33,6 +33,7 @@ SYNOPSIS
  tvapi.py [options]
     --api-key key            API key
     --threats                threats API request
+    --threats-history        threats release history API request
     --release-notes          release-notes API request
     --atp-reports            ATP reports API request
     --atp-pcaps              ATP reports pcaps API request
@@ -73,6 +74,7 @@ DESCRIPTION
  The Threat Vault API can be used to:
 
  - Get threat prevention metadata information
+ - Get threat content release and version history
  - Get application and threat release note information
  - Get Advanced Threat Prevention threat report
  - Get Advanced Threat Prevention threat pcap
@@ -87,6 +89,10 @@ DESCRIPTION
  ``--threats``
   Perform the ``/threats`` API request to get threat prevention
   metadata information.
+
+ ``--threats-history``
+  Perform the ``/threats/history`` API request to get threat content
+  release and version history for a threat signature ID.
 
  ``--release-notes``
   Perform the ``/release-notes`` API request to get application and
