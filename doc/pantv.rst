@@ -74,24 +74,27 @@ DESCRIPTION
  ThreatVaultApi provides an interface to the following Threat Vault
  API requests:
 
- +-----------------------------------+-----------------------+-------------------------------+
- | Request                           | ThreatVaultApi Method | API Resource Path             |
- +===================================+=======================+===============================+
- | | Get threat prevention metadata  | threats()             | /service/v1/threats           |
- | | information                     |                       |                               |
- +-----------------------------------+-----------------------+-------------------------------+
- | | Get threat content release and  | threats_history()     | /service/v1/threats/history   |
- | | version history                 |                       |                               |
- +-----------------------------------+-----------------------+-------------------------------+
- | | Get application and threat      | release_notes()       | /service/v1/release-notes     |
- | | release note information        |                       |                               |
- +-----------------------------------+-----------------------+-------------------------------+
- | | Get Advanced Threat Prevention  | atp_reports()         | /service/v1/atp/reports       |
- | | threat report                   |                       |                               |
- +-----------------------------------+-----------------------+-------------------------------+
- | | Get Advanced Threat Prevention  | atp_reports_pcaps()   | /service/v1/atp/reports/pcaps |
- | | threat pcap                     |                       |                               |
- +-----------------------------------+-----------------------+-------------------------------+
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
+ | Request                           | ThreatVaultApi Method | API Resource Path             | HTTP Method |
+ +===================================+=======================+===============================+=============+
+ | | Get threat prevention metadata  | threats()             | /service/v1/threats           | GET         |
+ | | information                     |                       |                               |             |
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
+ | | Get multiple threats            | threats2()            | /service/v1/threats           | POST        |
+ | | information (bulk query)        |                       |                               |             |
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
+ | | Get threat content release and  | threats_history()     | /service/v1/threats/history   | GET         |
+ | | version history                 |                       |                               |             |
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
+ | | Get application and threat      | release_notes()       | /service/v1/release-notes     | GET         |
+ | | release note information        |                       |                               |             |
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
+ | | Get Advanced Threat Prevention  | atp_reports()         | /service/v1/atp/reports       | POST        |
+ | | threat report                   |                       |                               |             |
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
+ | | Get Advanced Threat Prevention  | atp_reports_pcaps()   | /service/v1/atp/reports/pcaps | GET         |
+ | | threat pcap                     |                       |                               |             |
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
 
  Convenience methods implemented as generator functions are provided,
  which can be used to process all items when response paging can
@@ -239,7 +242,8 @@ threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=No
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``threats()`` method performs the ``/threats`` API request to get
- threat prevention metadata information.
+ threat prevention metadata information.  ``threats()`` uses the HTTP
+ GET method.
 
  **id**
   Threat signature ID number.
@@ -278,13 +282,13 @@ threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=No
  **type**
   Signature type:
 
-   **ips** - return all IPS signature metadata
+   **ips** - IPS signature metadata
 
-   **fileformat** - return file-format signature metadata
+   **fileformat** - file-format signature metadata
 
-   **spyware** - return anti-spyware signature metadata
+   **spyware** - anti-spyware signature metadata
 
-   **vulnerability** - return vulnerability protection signature metadata
+   **vulnerability** - vulnerability protection signature metadata
 
  **offset**
   Numeric offset used for response paging.  The default offset is 0.
@@ -328,6 +332,74 @@ threats_all()
      ``spyware`` or ``vulnerability`` list
    - **status** is False: HTTP client library response object
 
+threats2(\*, type=None, id=None, name=None, sha256=None, md5=None, data=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ The ``threats2()`` method performs the ``/threats`` API request to
+ get threat prevention metadata information.  ``threats2()``
+ uses the HTTP POST method.
+
+ ``threats2()`` is used to perform bulk queries using multiple values
+ for *id*, *name*, *sha256*, or *md5*.  Up to 100 query values can be
+ specified.
+
+ **type**
+  Signature type:
+
+   **ips** - IPS signature metadata
+
+   **fileformat** - file-format signature metadata
+
+   **spyware** - anti-spyware signature metadata
+
+   **vulnerability** - vulnerability protection signature metadata
+
+   **antivirus** - anti-virus signature metadata
+
+   **dns** - DNS signature  metadata
+
+   **rtdns** - real-time DNS detection entries metadata
+
+   **spywarec2** - spyware C2 signatures metadata
+
+ **id**
+  List of threat signature ID numbers.
+
+ **name**
+  List of threat signature names.  A complete string comparison of
+  name is performed; ``threats2()`` does not perform a fuzzy match on
+  signature name like ``threats()``.
+
+ **sha256**
+  List of SHA-256 sample hash values.
+
+ **md5**
+  List of MD5 sample hash values.
+
+ **data**
+  JSON text to send in the body of the request.
+  The text is a JSON object with key/values for *type* (optional)
+  and one of: *id*, *name*, *sha256*, *md5*.
+
+  **data** can be:
+
+   a Python object that can be deserialized to JSON text
+
+   a ``str``, ``bytes`` or ``bytearray`` type containing JSON text
+ 
+ **query_string**
+  Dictionary of key/value pairs to be sent as additional parameters in
+  the query string of the request.  This can be used to specify API
+  request parameters not supported by the class method.
+
+ **retry**
+  Retry the request indefinitely when a request is rate limited.  When
+  a HTTP 429 status code is returned, the function will suspend
+  execution until the time specified in the ``x-minute-ratelimit-reset``
+  response header, then retry the request.  Coroutine methods use
+  ``asyncio.sleep()`` to suspend and normal methods use
+  ``time.sleep()``.
+
 threats_history(\*, type=None, id=None, order=None, offset=None, limit=None, query_string=None, retry=False)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -338,9 +410,9 @@ threats_history(\*, type=None, id=None, order=None, offset=None, limit=None, que
  **type**
   Signature type:
 
-   **antivirus** - return anti-virus release and version history
+   **antivirus** - anti-virus release and version history
 
-   **wildfire** - return WildFire release and version history
+   **wildfire** - WildFire release and version history
 
  **id**
   Threat signature ID number.
@@ -409,7 +481,7 @@ atp_reports(\*, id=None, query_string=None, retry=False)
 
  **id**
   Advanced Threat Prevention report ID.  Multiple report IDs can be
-  specified as a list/array of hexadecimal strings.
+  specified as a list of hexadecimal strings.
 
   **id** can be:
 

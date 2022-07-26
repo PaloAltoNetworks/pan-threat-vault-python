@@ -33,18 +33,22 @@ SYNOPSIS
  tvapi.py [options]
     --api-key key            API key
     --threats                threats API request
+    --threats2               multiple threats bulk API request
     --threats-history        threats release history API request
     --release-notes          release-notes API request
     --atp-reports            ATP reports API request
     --atp-pcaps              ATP reports pcaps API request
     --all                    get all threats
     --id id                  signature/report ID (multiple --id's allowed)
-    --name name              signature name
+    --name name              signature name (multiple --names's allowed)
+    --sha256 hash            SHA-256 hash (multiple --sha256's allowed)
+    --md5 hash               MD5 hash (multiple --md5's allowed)
     --type type              signature/release-note type
     --note-version version   release-note version
     --offset num             items offset
     --limit num              number of items to return
     -Q json                  URL query string (multiple -Q's allowed)
+    --data json              threats2 POST data
     --url url                API URL
                              default https://api.threatvault.paloaltonetworks.com
     --verify opt             SSL server verify option: yes|no|path
@@ -89,6 +93,14 @@ DESCRIPTION
  ``--threats``
   Perform the ``/threats`` API request to get threat prevention
   metadata information.
+
+ ``--threats2``
+  Performs the ``/threats`` API request to get threat prevention
+  metadata information.  ``--threats2`` uses the HTTP POST method.
+
+  ``--threats2`` is used to perform bulk queries using multiple values
+  for *id*, *name*, *sha256*, or *md5*.  Up to 100 query values can be
+  specified.
 
  ``--threats-history``
   Perform the ``/threats/history`` API request to get threat content
@@ -138,6 +150,15 @@ DESCRIPTION
   match on the signature name; *name* must be at least 3 characters
   and only alphanumeric characters are allowed, other characters are
   ignored.
+  Multiple instances of the option are allowed.
+
+ ``--sha256`` *hash*
+  SHA-256 sample hash value.
+  Multiple instances of the option are allowed.
+
+ ``--md5`` *hash*
+  MD5 sample hash value.
+  Multiple instances of the option are allowed.
 
  ``--type`` *type*
   Signature type:
@@ -174,6 +195,11 @@ DESCRIPTION
 
   *json* can be a string, a path to a file containing a JSON object,
   or the value **-** to specify a JSON object is on *stdin*.
+
+ ``--data`` *json*
+  JSON text to send in the body of the ``--threats2`` request.
+  The text is a JSON object with key/values for *type* (optional)
+  and one of: *id*, *name*, *sha256*, *md5*.
 
  ``--url`` *url*
   URL used in API requests.

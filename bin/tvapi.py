@@ -132,9 +132,10 @@ class GeneratorList(list):
 
 def request(api, options):
     if options['threats']:
+        name = options['name'][0] if options['name'] is not None else None
         kwargs = {
             'id': options['id'],
-            'name': options['name'],
+            'name': name,
             'type': options['type'],
             'offset': options['offset'],
             'limit': options['limit'],
@@ -166,6 +167,19 @@ def request(api, options):
             print_status('threats', resp)
             print_response(options, resp)
             resp.raise_for_status()
+
+    elif options['threats2']:
+        resp = api.threats2(
+            type=options['type'],
+            id=options['id'],
+            name=options['name'],
+            sha256=options['sha256'],
+            md5=options['md5'],
+            data=options['data'],
+            query_string=options['query_string_obj'])
+        print_status('threats2', resp)
+        print_response(options, resp)
+        resp.raise_for_status()
 
     elif options['threats_history']:
         id_ = options['id'][0] if options['id'] is not None else None
@@ -207,9 +221,10 @@ def request(api, options):
 
 async def aiorequest(api, options):
     if options['threats']:
+        name = options['name'][0] if options['name'] is not None else None
         kwargs = {
             'id': options['id'],
-            'name': options['name'],
+            'name': name,
             'type': options['type'],
             'offset': options['offset'],
             'limit': options['limit'],
@@ -232,6 +247,19 @@ async def aiorequest(api, options):
             print_status('threats', resp)
             await aioprint_response(options, resp)
             resp.raise_for_status()
+
+    elif options['threats2']:
+        resp = await api.threats2(
+            type=options['type'],
+            id=options['id'],
+            name=options['name'],
+            sha256=options['sha256'],
+            md5=options['md5'],
+            data=options['data'],
+            query_string=options['query_string_obj'])
+        print_status('threats2', resp)
+        await aioprint_response(options, resp)
+        resp.raise_for_status()
 
     elif options['threats_history']:
         id_ = options['id'][0] if options['id'] is not None else None
@@ -414,6 +442,7 @@ def parse_opts():
         'url': None,
         'api-key': None,
         'threats': False,
+        'threats2': False,
         'threats_history': False,
         'release-notes': False,
         'atp-reports': False,
@@ -421,8 +450,11 @@ def parse_opts():
         'all': False,
         'id': None,
         'name': None,
+        'sha256': None,
+        'md5': None,
         'type': None,
         'note-version': None,
+        'data': None,
         'offset': None,
         'limit': None,
         'query_strings': [],
@@ -444,9 +476,10 @@ def parse_opts():
     long_options = [
         'help', 'version', 'debug=', 'dtime',
         'api-version=', 'url=', 'api-key=',
-        'threats', 'threats-history', 'release-notes',
+        'threats', 'threats2', 'threats-history', 'release-notes',
         'atp-reports', 'atp-pcaps',
-        'all', 'id=', 'name=', 'type=', 'note-version=',
+        'all', 'id=', 'name=', 'sha256=', 'md5=',
+        'type=', 'note-version=', 'data=',
         'offset=', 'limit=',
         'rate-limits', 'dst=', 'verify=', 'aio', 'noaio',
         'timeout=',
@@ -479,6 +512,8 @@ def parse_opts():
             options['api-key'] = arg
         elif opt == '--threats':
             options['threats'] = True
+        elif opt == '--threats2':
+            options['threats2'] = True
         elif opt == '--threats-history':
             options['threats_history'] = True
         elif opt == '--release-notes':
@@ -494,11 +529,23 @@ def parse_opts():
                 options['id'] = []
             options['id'].append(arg)
         elif opt == '--name':
-            options['name'] = arg
+            if options['name'] is None:
+                options['name'] = []
+            options['name'].append(arg)
+        elif opt == '--sha256':
+            if options['sha256'] is None:
+                options['sha256'] = []
+            options['sha256'].append(arg)
+        elif opt == '--md5':
+            if options['md5'] is None:
+                options['md5'] = []
+            options['md5'].append(arg)
         elif opt == '--type':
             options['type'] = arg
         elif opt == '--note-version':
             options['note-version'] = arg
+        elif opt == '--data':
+            options['data'] = process_arg(arg)
         elif opt == '--offset':
             options['offset'] = arg
         elif opt == '--limit':
@@ -602,18 +649,22 @@ def usage():
     usage = '''%s [options]
     --api-key key            API key
     --threats                threats API request
+    --threats2               multiple threats bulk API request
     --threats-history        threats release history API request
     --release-notes          release-notes API request
     --atp-reports            ATP reports API request
     --atp-pcaps              ATP reports pcaps API request
     --all                    get all threats
     --id id                  signature/report ID (multiple --id's allowed)
-    --name name              signature name
+    --name name              signature name (multiple --names's allowed)
+    --sha256 hash            SHA-256 hash (multiple --sha256's allowed)
+    --md5 hash               MD5 hash (multiple --md5's allowed)
     --type type              signature/release-note type
     --note-version version   release-note version
     --offset num             items offset
     --limit num              number of items to return
     -Q json                  URL query string (multiple -Q's allowed)
+    --data json              threats2 POST data
     --url url                API URL
                              default %s
     --verify opt             SSL server verify option: yes|no|path
