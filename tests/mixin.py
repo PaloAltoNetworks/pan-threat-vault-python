@@ -30,6 +30,8 @@ class _MixinShared:
         }
         if 'verify' in x:
             kwargs['verify'] = opt_verify(x['verify'])
+        if 'url' in x:
+            kwargs['url'] = x['url']
 
         x = os.getenv('PANTV_DEBUG')
         if x is not None:
