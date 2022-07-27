@@ -100,6 +100,7 @@ class ThreatVaultApi(mixin.Mixin):
         return resp
 
     def threats(self, *,
+                type=None,
                 id=None,
                 name=None,
                 cve=None,
@@ -109,7 +110,6 @@ class ThreatVaultApi(mixin.Mixin):
                 toReleaseVersion=None,
                 releaseDate=None,
                 releaseVersion=None,
-                type=None,
                 offset=None,
                 limit=None,
                 query_string=None,

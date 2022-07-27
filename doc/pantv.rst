@@ -238,12 +238,23 @@ pantv.ThreatVaultApi Method Return Value
 pantv.ThreatVaultApi Methods
 ----------------------------
 
-threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=None, fromReleaseVersion=None, toReleaseVersion=None, releaseDate=None, releaseVersion=None,  type=None, offset=None, limit=None, query_string=None, retry=False)
+threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=None, fromReleaseVersion=None, toReleaseVersion=None, releaseDate=None, releaseVersion=None,  offset=None, limit=None, query_string=None, retry=False)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``threats()`` method performs the ``/threats`` API request to get
  threat prevention metadata information.  ``threats()`` uses the HTTP
  GET method.
+
+ **type**
+  Signature type:
+
+   **ips** - IPS signature metadata
+
+   **fileformat** - file-format signature metadata
+
+   **spyware** - anti-spyware signature metadata
+
+   **vulnerability** - vulnerability protection signature metadata
 
  **id**
   Threat signature ID number.
@@ -278,17 +289,6 @@ threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=No
 
  **releaseVersion**
   Content release version.
-
- **type**
-  Signature type:
-
-   **ips** - IPS signature metadata
-
-   **fileformat** - file-format signature metadata
-
-   **spyware** - anti-spyware signature metadata
-
-   **vulnerability** - vulnerability protection signature metadata
 
  **offset**
   Numeric offset used for response paging.  The default offset is 0.
