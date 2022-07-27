@@ -274,7 +274,7 @@ threats(\*, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=No
   End version for content release range.
 
  **releaseDate**
-  Content release data.  Date format is *YYYY-MM-DD*.
+  Content release date.  Date format is *YYYY-MM-DD*.
 
  **releaseVersion**
   Content release version.
