@@ -289,6 +289,7 @@ class ThreatVaultApi(mixin.Mixin):
 
     def atp_reports(self, *,
                     id=None,
+                    data=None,
                     query_string=None,
                     retry=False):
         path = BASE_PATH + '/atp/reports'
@@ -302,11 +303,14 @@ class ThreatVaultApi(mixin.Mixin):
             'url': url,
             'params': params,
         }
-        if id is not None:
-            if isinstance(id, (bytes, str, bytearray)):
-                kwargs['data'] = id
+        if data is not None:
+            if isinstance(data, (bytes, str, bytearray)):
+                kwargs['data'] = data
                 kwargs['headers'] = {'content-type': 'application/json'}
             else:
+                kwargs['json'] = data
+        else:
+            if id is not None:
                 kwargs['json'] = {'id': id}
 
         resp = self._request_retry(retry=retry,

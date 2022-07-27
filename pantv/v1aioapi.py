@@ -302,6 +302,7 @@ class ThreatVaultApi(mixin.AioMixin):
     async def atp_reports(self, *,
                           id=None,
                           query_string=None,
+                          data=None,
                           retry=False):
         path = BASE_PATH + '/atp/reports'
         url = self.url + path
@@ -315,11 +316,14 @@ class ThreatVaultApi(mixin.AioMixin):
             'ssl': self.ssl,
             'params': params,
         }
-        if id is not None:
-            if isinstance(id, (bytes, str, bytearray)):
-                kwargs['data'] = id
+        if data is not None:
+            if isinstance(data, (bytes, str, bytearray)):
+                kwargs['data'] = data
                 kwargs['headers'] = {'content-type': 'application/json'}
             else:
+                kwargs['json'] = data
+        else:
+            if id is not None:
                 kwargs['json'] = {'id': id}
 
         resp = await self._request_retry(retry=retry,

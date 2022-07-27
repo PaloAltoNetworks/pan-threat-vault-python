@@ -48,7 +48,7 @@ SYNOPSIS
     --offset num             items offset
     --limit num              number of items to return
     -Q json                  URL query string (multiple -Q's allowed)
-    --data json              threats2 POST data
+    --data json              threats2, atp-reports POST data
     --url url                API URL
                              default https://api.threatvault.paloaltonetworks.com
     --verify opt             SSL server verify option: yes|no|path
@@ -197,9 +197,16 @@ DESCRIPTION
   or the value **-** to specify a JSON object is on *stdin*.
 
  ``--data`` *json*
-  JSON text to send in the body of the ``--threats2`` request.
-  The text is a JSON object with key/values for *type* (optional)
-  and one of: *id*, *name*, *sha256*, *md5*.
+  JSON text to send in the body of the request.
+
+  ``--threats2`` request:
+
+   The text is a JSON object with key/values for *type* (optional) and
+   one of: *id*, *name*, *sha256*, *md5*.
+
+  ``--atp-reports`` request:
+
+   The text is a JSON object with key/values for *id*.
 
  ``--url`` *url*
   URL used in API requests.

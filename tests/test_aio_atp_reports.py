@@ -25,17 +25,17 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
         self.assertFalse(x['success'])
 
     async def test_04(self):
-        x = 'x-invalid-json'
+        x = 'x-not-list'
         resp = await self.api.atp_reports(id=x)
         self.assertEqual(resp.status, 400)
         x = await resp.json()
-        msg = 'Valid JSON object is required.'
+        msg = 'id: Expected a list of items but got type "str".'
         self.assertEqual(x['message'], msg)
         self.assertFalse(x['success'])
 
     async def test_05(self):
         x = '{"id": ["abcd0123"]}'
-        resp = await self.api.atp_reports(id=x)
+        resp = await self.api.atp_reports(data=x)
         self.assertEqual(resp.status, 404)
         x = await resp.json()
         self.assertFalse(x['success'])

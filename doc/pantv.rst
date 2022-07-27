@@ -473,19 +473,23 @@ release_notes(\*, type=None, version=None, query_string=None, retry=False)
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
 
-atp_reports(\*, id=None, query_string=None, retry=False)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atp_reports(\*, id=None, data=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``atp_reports()`` method performs the ``/atp/reports`` API
  request to get an Advanced Threat Prevention threat report.
 
  **id**
-  Advanced Threat Prevention report ID.  Multiple report IDs can be
-  specified as a list of hexadecimal strings.
+  List of Advanced Threat Prevention report IDs.  A report ID is a
+  hexadecimal string.
 
-  **id** can be:
+ **data**
+  JSON text to send in the body of the request.
+  The text is a JSON object with key/values for *id*.
 
-   a Python list
+  **data** can be:
+
+   a Python object that can be deserialized to JSON text
 
    a ``str``, ``bytes`` or ``bytearray`` type containing JSON text
 

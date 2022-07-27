@@ -205,6 +205,7 @@ def request(api, options):
     elif options['atp-reports']:
         resp = api.atp_reports(
             id=options['id'],
+            data=options['data'],
             query_string=options['query_string_obj'])
         print_status('atp-reports', resp)
         print_response(options, resp)
@@ -285,6 +286,7 @@ async def aiorequest(api, options):
     elif options['atp-reports']:
         resp = await api.atp_reports(
             id=options['id'],
+            data=options['data'],
             query_string=options['query_string_obj'])
         print_status('atp-reports', resp)
         await aioprint_response(options, resp)
@@ -664,7 +666,7 @@ def usage():
     --offset num             items offset
     --limit num              number of items to return
     -Q json                  URL query string (multiple -Q's allowed)
-    --data json              threats2 POST data
+    --data json              threats2, atp-reports POST data
     --url url                API URL
                              default %s
     --verify opt             SSL server verify option: yes|no|path
