@@ -132,11 +132,18 @@ class GeneratorList(list):
 
 def request(api, options):
     if options['threats']:
+        id_ = options['id'][0] if options['id'] is not None else None
         name = options['name'][0] if options['name'] is not None else None
+        sha256 = options['sha256'][0] \
+            if options['sha256'] is not None else None
+        md5 = options['md5'][0] \
+            if options['md5'] is not None else None
         kwargs = {
-            'id': options['id'],
-            'name': name,
             'type': options['type'],
+            'id': id_,
+            'name': name,
+            'sha256': sha256,
+            'md5': md5,
             'offset': options['offset'],
             'limit': options['limit'],
             'query_string': options['query_string_obj'],
@@ -222,11 +229,18 @@ def request(api, options):
 
 async def aiorequest(api, options):
     if options['threats']:
+        id_ = options['id'][0] if options['id'] is not None else None
         name = options['name'][0] if options['name'] is not None else None
+        sha256 = options['sha256'][0] \
+            if options['sha256'] is not None else None
+        md5 = options['md5'][0] \
+            if options['md5'] is not None else None
         kwargs = {
-            'id': options['id'],
-            'name': name,
             'type': options['type'],
+            'id': id_,
+            'name': name,
+            'sha256': sha256,
+            'md5': md5,
             'offset': options['offset'],
             'limit': options['limit'],
             'query_string': options['query_string_obj'],

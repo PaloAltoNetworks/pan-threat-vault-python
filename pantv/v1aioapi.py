@@ -118,6 +118,8 @@ class ThreatVaultApi(mixin.AioMixin):
                       toReleaseVersion=None,
                       releaseDate=None,
                       releaseVersion=None,
+                      sha256=None,
+                      md5=None,
                       offset=None,
                       limit=None,
                       query_string=None,

@@ -153,23 +153,31 @@ DESCRIPTION
   Multiple instances of the option are allowed.
 
  ``--sha256`` *hash*
-  SHA-256 sample hash value.
+  Sample SHA-256 hash value.
   Multiple instances of the option are allowed.
 
  ``--md5`` *hash*
-  MD5 sample hash value.
+  Sample MD5 hash value.
   Multiple instances of the option are allowed.
 
  ``--type`` *type*
   Signature type:
 
-   **ips** - return all IPS signature metadata
+   **ips** - all IPS signature metadata
 
-   **fileformat** - return file-format signature metadata
+   **fileformat** - file-format signature metadata
 
-   **spyware** - return anti-spyware signature metadata
+   **spyware** - anti-spyware signature metadata
 
-   **vulnerability** - return vulnerability protection signature metadata
+   **vulnerability** - vulnerability protection signature metadata
+
+   **antivirus** - anti-virus signature metadata
+
+   **dns** - DNS signature  metadata
+
+   **rtdns** - real-time DNS detection entries metadata
+
+   **spywarec2** - spyware C2 signatures metadata
 
   Release note type:
 

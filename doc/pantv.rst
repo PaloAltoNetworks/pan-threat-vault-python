@@ -238,17 +238,20 @@ pantv.ThreatVaultApi Method Return Value
 pantv.ThreatVaultApi Methods
 ----------------------------
 
-threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=None, fromReleaseVersion=None, toReleaseVersion=None, releaseDate=None, releaseVersion=None,  offset=None, limit=None, query_string=None, retry=False)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toReleaseDate=None, fromReleaseVersion=None, toReleaseVersion=None, releaseDate=None, releaseVersion=None,  sha256=None, md5=None, offset=None, limit=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  The ``threats()`` method performs the ``/threats`` API request to get
  threat prevention metadata information.  ``threats()`` uses the HTTP
  GET method.
 
  **type**
-  Signature type:
+  Signature type.  Signature types are grouped into
+  *IPS* types (Intrusion Prevention System) and *Virus* types:
 
-   **ips** - IPS signature metadata
+  - *IPS*
+
+   **ips** - all IPS signature metadata
 
    **fileformat** - file-format signature metadata
 
@@ -256,39 +259,61 @@ threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toRel
 
    **vulnerability** - vulnerability protection signature metadata
 
+  - *Virus*
+
+   **antivirus** - anti-virus signature metadata
+
+   **dns** - DNS signature  metadata
+
+   **rtdns** - real-time DNS detection entries metadata
+
+   **spywarec2** - spyware C2 signatures metadata
+ 
  **id**
   Threat signature ID number.
 
  **name**
-  Threat signature name.  Words in *name* are used to perform a fuzzy
-  match on the signature name; *name* must be at least 3 characters
-  and only alphanumeric characters are allowed, other characters are
-  ignored.
+  Threat signature name.
+
+  For *IPS* signature types only, words in *name* are used to
+  perform a fuzzy match on the signature name; *name* must be at least
+  3 characters and only alphanumeric characters are allowed, other
+  characters are ignored.
 
  **cve**
-  CVE (Common Vulnerabilities and Exposures) name or partial CVE
-  name.  Examples:
+  CVE (Common Vulnerabilities and Exposures) name.
+
+  For *IPS* signature types only, a partial CVE name can be
+  specified.
+
+  Examples:
 
   - CVE-2022-21907
-  - CVE-2022
+  - CVE-2022 (partial name)
 
- **fromReleaseDate**
+ **fromReleaseDate** (*IPS* signature types only)
   Start date for content release range.  Date format is *YYYY-MM-DD*.
 
- **toReleaseDate**
+ **toReleaseDate** (*IPS* signature types only)
   End date for content release range.  Date format is *YYYY-MM-DD*.
 
- **fromReleaseVersion**
+ **fromReleaseVersion** (*IPS* signature types only)
   Start version for content release range.
 
- **toReleaseVersion**
+ **toReleaseVersion** (*IPS* signature types only)
   End version for content release range.
 
- **releaseDate**
+ **releaseDate** (*IPS* signature types only)
   Content release date.  Date format is *YYYY-MM-DD*.
 
- **releaseVersion**
+ **releaseVersion** (*IPS* signature types only)
   Content release version.
+
+ **sha256** (*Virus* signature types only)
+  Sample SHA-256 hash value.
+
+ **md5** (*Virus* signature types only)
+  Sample MD5 hash value.
 
  **offset**
   Numeric offset used for response paging.  The default offset is 0.
@@ -371,10 +396,10 @@ threats2(\*, type=None, id=None, name=None, sha256=None, md5=None, data=None, qu
   signature name like ``threats()``.
 
  **sha256**
-  List of SHA-256 sample hash values.
+  List of sample SHA-256 hash values.
 
  **md5**
-  List of MD5 sample hash values.
+  List of sample MD5 hash values.
 
  **data**
   JSON text to send in the body of the request.

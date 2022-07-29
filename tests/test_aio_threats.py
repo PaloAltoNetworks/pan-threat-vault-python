@@ -89,3 +89,35 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
             total += 1
             self.assertGreater(x['id'], 0)
         self.assertEqual(count, total)
+
+    async def test_08(self):
+        id_ = '280392504'
+        resp = await self.api.threats(id=[id_])
+        self.assertEqual(resp.status, 200)
+        x = await resp.json()
+        self.assertEqual(x['message'], 'Successful')
+        self.assertTrue(x['success'])
+        self.assertEqual(x['count'], 1)
+        item = x['data']['antivirus'][0]
+        self.assertEqual(item['id'], id_)
+        self.assertIn('related_sha256_hashes', item)
+
+        sha256 = item['related_sha256_hashes'][0]
+        resp = await self.api.threats(sha256=sha256)
+        self.assertEqual(resp.status, 200)
+        x = await resp.json()
+        self.assertEqual(x['message'], 'Successful')
+        self.assertTrue(x['success'])
+        self.assertEqual(x['count'], 1)
+        item = x['data']['fileinfo'][0]
+        self.assertEqual(item['sha256'], sha256)
+
+        md5 = item['md5']
+        resp = await self.api.threats(md5=md5)
+        self.assertEqual(resp.status, 200)
+        x = await resp.json()
+        self.assertEqual(x['message'], 'Successful')
+        self.assertTrue(x['success'])
+        self.assertEqual(x['count'], 1)
+        item = x['data']['fileinfo'][0]
+        self.assertEqual(item['md5'], md5)
