@@ -41,5 +41,5 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
                                       version='0001')
         self.assertEqual(resp.status_code, 404)
         x = resp.json()
-        self.assertRegex(x['message'], 'Not found')
+        self.assertRegex(x['message'], 'Not Found')
         self.assertFalse(x['success'])

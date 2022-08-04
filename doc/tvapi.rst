@@ -191,7 +191,7 @@ DESCRIPTION
 
  ``--limit`` *num*
   Numeric number of items to return in a response.  The default
-  limit is 10,000 and the maximum is 10,000.
+  limit is 1,000 and the maximum is 1,000.
 
   Paging is used in the threats API request.
 

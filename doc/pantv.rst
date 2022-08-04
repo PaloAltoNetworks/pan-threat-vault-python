@@ -320,7 +320,7 @@ threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toRel
 
  **limit**
   Numeric number of items to return in a response.  The default
-  limit is 10,000 and the maximum is 10,000.
+  limit is 1,000 and the maximum is 1,000.
 
  **query_string**
   Dictionary of key/value pairs to be sent as additional parameters in
@@ -341,7 +341,7 @@ threats_all()
  The ``threats_all()`` method is a generator function which executes
  the ``threats()`` method until all items are returned.  Response
  paging is handled with the **offset** and **limit** specified, or a
- starting offset of 0 and limit of 10,000.  The arguments are the same
+ starting offset of 0 and limit of 1,000.  The arguments are the same
  as in the ``threats()`` method.
 
  The generator function yields a tuple containing:
@@ -456,7 +456,7 @@ threats_history(\*, type=None, id=None, order=None, offset=None, limit=None, que
 
  **limit**
   Numeric number of items to return in a response.  The default
-  limit is 10,000 and the maximum is 10,000.
+  limit is 1,000 and the maximum is 1,000.
 
  **query_string**
   Dictionary of key/value pairs to be sent as additional parameters in

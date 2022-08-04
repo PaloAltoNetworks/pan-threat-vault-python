@@ -6,8 +6,7 @@ from . import mixin
 class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
     async def test_01(self):
         resp = await self.api.threats_history()
-#        self.assertEqual(resp.status, 400)
-        self.assertEqual(resp.status, 500)
+        self.assertEqual(resp.status, 400)
         x = await resp.json()
         msg = 'id: This field is required. type: This field is required.'
         self.assertEqual(x['message'], msg)
@@ -15,8 +14,7 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
 
     async def test_02(self):
         resp = await self.api.threats_history(type='wildfire')
-#        self.assertEqual(resp.status, 400)
-        self.assertEqual(resp.status, 500)
+        self.assertEqual(resp.status, 400)
         x = await resp.json()
         msg = 'id: This field is required.'
         self.assertEqual(x['message'], msg)
@@ -24,8 +22,7 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
 
     async def test_03(self):
         resp = await self.api.threats_history(id='100')
-#        self.assertEqual(resp.status, 400)
-        self.assertEqual(resp.status, 500)
+        self.assertEqual(resp.status, 400)
         x = await resp.json()
         msg = 'type: This field is required.'
         self.assertEqual(x['message'], msg)
@@ -41,8 +38,7 @@ class ThreatVaultApiTest(mixin.AioMixin, unittest.IsolatedAsyncioTestCase):
 
     async def test_05(self):
         resp = await self.api.threats_history(id='x-invalid')
-#        self.assertEqual(resp.status, 400)
-        self.assertEqual(resp.status, 500)
+        self.assertEqual(resp.status, 400)
         x = await resp.json()
         msg = 'id: A valid integer is required. type: This field is required.'
         self.assertEqual(x['message'], msg)

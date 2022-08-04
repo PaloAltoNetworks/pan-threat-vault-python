@@ -160,7 +160,7 @@ class ThreatVaultApi(mixin.AioMixin):
                 raise ArgsError('offset not int')
 
         if 'limit' not in kwargs or kwargs['limit'] is None:
-            limit = 10000
+            limit = 1000
             kwargs['limit'] = limit
         else:
             try:

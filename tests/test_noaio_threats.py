@@ -5,7 +5,8 @@ from . import mixin
 
 class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
     def test_01(self):
-        resp = self.api.threats(id=30000)
+        id_ = '30000'
+        resp = self.api.threats(id=id_)
         self.assertEqual(resp.status_code, 200)
         x = resp.json()
         self.assertEqual(x['message'], 'Successful')
@@ -13,7 +14,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertEqual(x['count'], 1)
         self.assertEqual(x['count'], len(x['data']['vulnerability']))
         item = x['data']['vulnerability'][0]
-        self.assertEqual(item['id'], 30000)
+        self.assertEqual(item['id'], id_)
         self.assertEqual(item['cve'][0], 'CVE-2018-15984')
 
     def test_02(self):
@@ -25,7 +26,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertTrue(x['success'])
         self.assertEqual(x['count'], 1)
         item = x['data']['vulnerability'][0]
-        self.assertEqual(item['id'], 30000)
+        self.assertEqual(item['id'], '30000')
 
     def test_03(self):
         x = 'Adobe Reader Memory Corruption Vulnerability'
@@ -59,7 +60,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         total = 0
         for threat in threats:
             total += len(threat)
-        self.assertEqual(total, 10000)
+        self.assertEqual(total, 1000)
 
     def test_06(self):
         resp = self.api.threats(type='ips',
@@ -87,7 +88,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
             if not result:
                 self.assertTrue(result, '%s %s' % (x.status_code, x.reason))
             total += 1
-            self.assertGreater(x['id'], 0)
+            self.assertGreater(int(x['id']), 0)
         self.assertEqual(count, total)
 
     def test_08(self):
