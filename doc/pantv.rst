@@ -712,10 +712,13 @@ SEE ALSO
   https://github.com/PaloAltoNetworks/pan-threat-vault-python/blob/main/doc/tvapi.rst
 
  Threat Vault API Reference
-  https://panos.pan.dev/api/tp/tp-public-api-overview
+  https://pan.dev/cdss/threat-vault/api/
 
- Advanced Threat Prevention
-  https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/threat-prevention/about-threat-prevention/advanced-threat-prevention
+ Threat Vault API Developer Documentation
+  https://pan.dev/cdss/threat-vault/docs
+
+ OpenAPI Documents
+  https://github.com/PaloAltoNetworks/pan.dev/tree/master/static/cdss/threat-vault/spec
 
 AUTHORS
 =======

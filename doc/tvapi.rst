@@ -359,12 +359,11 @@ EXAMPLES
   $ tvapi.py -F /etc/tv/keys-acmecorp.json --debug 1 --threats --id 13200 -j
   Using selector: KqueueSelector
   api_version: v1, 0x0100
-  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?id=13200 200 OK 661
-  threats: 200 OK 661
+  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?id=13200 200 OK 632
+  threats: 200 OK 632
   {
       "count": 1,
       "data": {
-          "fileformat": [],
           "spyware": [
               {
                   "category": "spyware",
@@ -374,21 +373,20 @@ EXAMPLES
                   "details": {
                       "change_data": "updated associated metadata information"
                   },
-                  "id": 13200,
+                  "id": "13200",
                   "latest_release_time": "2022-02-07T15:40:05Z",
-                  "latest_release_version": 8524,
+                  "latest_release_version": "8524",
                   "max_version": "",
                   "min_version": "8.1.0",
                   "name": "Gh0st.Gen Command and Control Traffic",
                   "ori_release_time": "2017-03-09T14:00:08Z",
-                  "ori_release_version": 671,
+                  "ori_release_version": "671",
                   "reference": [],
                   "severity": "critical",
                   "status": "released",
                   "vendor": []
               }
-          ],
-          "vulnerability": []
+          ]
       },
       "link": {
           "next": null,
@@ -425,16 +423,7 @@ EXAMPLES
  Get all threats and save to a file:
  ::
 
-  $ tvapi.py -F /etc/tv/keys-acmecorp.json --debug 1 --threats --type ips --all -j >threats-all.json
-  Using selector: KqueueSelector
-  api_version: v1, 0x0100
-  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?type=ips&offset=0&limit=10000 200 OK 7714517
-  count 26864 current 10000 total 10000
-  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?type=ips&offset=10000&limit=10000 200 OK 9286942
-  count 26864 current 10000 total 20000
-  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?type=ips&offset=20000&limit=10000 200 OK 5583902
-  count 26864 current 6864 total 26864
-  closing aiohttp session
+  $ tvapi.py -F /etc/tv/keys-acmecorp.json --threats --type ips --all -j >threats-all.json
 
  Get threats updated in a specific one day window, and display the CVE
  IDs that are available:
@@ -445,7 +434,7 @@ EXAMPLES
   > -jJ 'data[?not_null(cve)].cve'
   Using selector: KqueueSelector
   api_version: v1, 0x0100
-  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?offset=0&limit=10000&fromReleaseDate=2022-03-22&toReleaseDate=2022-03-23 200 OK 8689
+  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?offset=0&limit=1000&fromReleaseDate=2022-03-22&toReleaseDate=2022-03-23 200 OK 8698
   count 9 current 9 total 9
   [
       [
@@ -482,10 +471,13 @@ SEE ALSO
   https://github.com/PaloAltoNetworks/pan-threat-vault-python/blob/main/doc/pantv.rst
 
  Threat Vault API Reference
-  https://panos.pan.dev/api/tp/tp-public-api-overview
+  https://pan.dev/cdss/threat-vault/api/
 
- Advanced Threat Prevention
-  https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/threat-prevention/about-threat-prevention/advanced-threat-prevention
+ Threat Vault API Developer Documentation
+  https://pan.dev/cdss/threat-vault/docs
+
+ OpenAPI Documents
+  https://github.com/PaloAltoNetworks/pan.dev/tree/master/static/cdss/threat-vault/spec
 
  JMESPath query language for JSON
   https://jmespath.org/
