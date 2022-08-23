@@ -283,13 +283,15 @@ threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toRel
  **cve**
   CVE (Common Vulnerabilities and Exposures) name.
 
-  For *IPS* signature types only, a partial CVE name can be
-  specified.
+  An exact or partial CVE name can be specified:
+
+  - partial CVE name format: *CVE-YYYY*
+  - exact CVE name format: *CVE-YYYY-NNNN* (NNNN can be 4 or more digits)
 
   Examples:
 
   - CVE-2022-21907
-  - CVE-2022 (partial name)
+  - CVE-2022
 
  **fromReleaseDate** (*IPS* signature types only)
   Start date for content release range.  Date format is *YYYY-MM-DD*.
