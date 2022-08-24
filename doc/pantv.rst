@@ -281,17 +281,17 @@ threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toRel
   characters are ignored.
 
  **cve**
-  CVE (Common Vulnerabilities and Exposures) name.
+  CVE (Common Vulnerabilities and Exposures) ID.
 
-  An exact or partial CVE name can be specified:
+  An exact or partial CVE ID can be specified:
 
-  - partial CVE name format: *CVE-YYYY*
-  - exact CVE name format: *CVE-YYYY-NNNN* (NNNN can be 4 or more digits)
+  - partial CVE ID format: *CVE-YYYY*
+  - exact CVE ID format: *CVE-YYYY-NNNN* (NNNN can be 4 or more digits)
 
   Examples:
 
-  - CVE-2022-21907
   - CVE-2022
+  - CVE-2022-21907
 
  **vendor** (*IPS* signature types only)
   Vendor ID.
