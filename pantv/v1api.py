@@ -104,6 +104,7 @@ class ThreatVaultApi(mixin.Mixin):
                 id=None,
                 name=None,
                 cve=None,
+                vendor=None,
                 fromReleaseDate=None,
                 toReleaseDate=None,
                 fromReleaseVersion=None,

@@ -122,3 +122,14 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         self.assertEqual(x['count'], 1)
         item = x['data']['fileinfo'][0]
         self.assertEqual(item['md5'], md5)
+
+    def test_09(self):
+        x = 'APSB22-16'
+        resp = self.api.threats(vendor=x)
+        self.assertEqual(resp.status_code, 200)
+        x = resp.json()
+        self.assertEqual(x['message'], 'Successful')
+        self.assertTrue(x['success'])
+        self.assertGreater(x['count'], 0)
+        items = x['data']['vulnerability']
+        self.assertEqual(x['count'], len(items))

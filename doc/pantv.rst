@@ -293,6 +293,12 @@ threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toRel
   - CVE-2022-21907
   - CVE-2022
 
+ **vendor** (*IPS* signature types only)
+  Vendor ID.
+
+  This is a vulnerability identifier which can be issued by a vendor
+  to reference a security advisory or bulletin.
+
  **fromReleaseDate** (*IPS* signature types only)
   Start date for content release range.  Date format is *YYYY-MM-DD*.
 
