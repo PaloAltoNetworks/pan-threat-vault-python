@@ -142,6 +142,7 @@ def request(api, options):
             'type': options['type'],
             'id': id_,
             'name': name,
+            'cve': options['cve'],
             'sha256': sha256,
             'md5': md5,
             'offset': options['offset'],
@@ -239,6 +240,7 @@ async def aiorequest(api, options):
             'type': options['type'],
             'id': id_,
             'name': name,
+            'cve': options['cve'],
             'sha256': sha256,
             'md5': md5,
             'offset': options['offset'],
@@ -465,6 +467,7 @@ def parse_opts():
         'atp-pcaps': False,
         'all': False,
         'id': None,
+        'cve': None,
         'name': None,
         'sha256': None,
         'md5': None,
@@ -494,7 +497,7 @@ def parse_opts():
         'api-version=', 'url=', 'api-key=',
         'threats', 'threats2', 'threats-history', 'release-notes',
         'atp-reports', 'atp-pcaps',
-        'all', 'id=', 'name=', 'sha256=', 'md5=',
+        'all', 'id=', 'name=', 'cve=', 'sha256=', 'md5=',
         'type=', 'note-version=', 'data=',
         'offset=', 'limit=',
         'rate-limits', 'dst=', 'verify=', 'aio', 'noaio',
@@ -544,6 +547,8 @@ def parse_opts():
             if options['id'] is None:
                 options['id'] = []
             options['id'].append(arg)
+        elif opt == '--cve':
+            options['cve'] = arg
         elif opt == '--name':
             if options['name'] is None:
                 options['name'] = []
@@ -673,6 +678,7 @@ def usage():
     --all                    get all threats
     --id id                  signature/report ID (multiple --id's allowed)
     --name name              signature name (multiple --names's allowed)
+    --cve id                 CVE ID
     --sha256 hash            SHA-256 hash (multiple --sha256's allowed)
     --md5 hash               MD5 hash (multiple --md5's allowed)
     --type type              signature/release-note type

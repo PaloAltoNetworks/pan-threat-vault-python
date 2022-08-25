@@ -41,6 +41,7 @@ SYNOPSIS
     --all                    get all threats
     --id id                  signature/report ID (multiple --id's allowed)
     --name name              signature name (multiple --names's allowed)
+    --cve id                 CVE ID
     --sha256 hash            SHA-256 hash (multiple --sha256's allowed)
     --md5 hash               MD5 hash (multiple --md5's allowed)
     --type type              signature/release-note type
@@ -151,6 +152,19 @@ DESCRIPTION
   and only alphanumeric characters are allowed, other characters are
   ignored.
   Multiple instances of the option are allowed.
+
+ ``--cve`` *id*
+  CVE (Common Vulnerabilities and Exposures) ID.
+
+  An exact or partial CVE ID can be specified:
+
+  - partial CVE ID format: *CVE-YYYY*
+  - exact CVE ID format: *CVE-YYYY-NNNN* (NNNN can be 4 or more digits)
+
+  Examples:
+
+  - CVE-2022
+  - CVE-2022-21907
 
  ``--sha256`` *hash*
   Sample SHA-256 hash value.
@@ -462,6 +476,18 @@ EXAMPLES
           "CVE-2021-35598"
       ]
   ]
+  closing aiohttp session
+
+ Get threats which reference a CVE ID in year 2021 using a partial match
+ and display the ``count`` object member value in the response:
+ ::
+
+  $ tvapi.py -F /etc/tv/keys-acmecorp.json  --debug 1 --threats --cve CVE-2021 -jJ count
+  Using selector: KqueueSelector
+  api_version: v1, 0x0100
+  GET https://api.threatvault.paloaltonetworks.com/service/v1/threats?cve=CVE-2021 200 OK 943732
+  threats: 200 OK 943732
+  1098
   closing aiohttp session
 
 SEE ALSO
