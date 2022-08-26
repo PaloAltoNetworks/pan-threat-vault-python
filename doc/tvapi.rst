@@ -105,7 +105,8 @@ DESCRIPTION
 
  ``--threats-history``
   Perform the ``/threats/history`` API request to get threat content
-  release and version history for a threat signature ID.
+  release and version history for a threat signature ID and signature
+  type.
 
  ``--release-notes``
   Perform the ``/release-notes`` API request to get application and
@@ -175,10 +176,15 @@ DESCRIPTION
   Multiple instances of the option are allowed.
 
  ``--type`` *type*
-  Signature type.
+  Specify type for:
 
-  Signature types are grouped into *IPS* types (Intrusion Prevention
-  System) and *Virus* types:
+  - ``--threats`` - threat signature type
+  - ``--threats2`` - threat signature type
+  - ``--threats-history`` - threat history signature type
+  - ``--release-notes`` - release note type
+
+  Threat signature types are grouped into *IPS* types (Intrusion
+  Prevention System) and *Virus* types:
 
   - *IPS*
 
@@ -199,6 +205,12 @@ DESCRIPTION
    **rtdns** - real-time DNS detection entries metadata
 
    **spywarec2** - spyware C2 signature metadata
+
+  Threat history signature type:
+
+   **antivirus** - anti-virus release and version history
+
+   **wildfire** - WildFire release and version history
 
   Release note type:
 

@@ -447,7 +447,7 @@ threats_history(\*, type=None, id=None, order=None, offset=None, limit=None, que
 
  The ``threats_history()`` method performs the ``/threats/history``
  API request to get threat content release and version history for a
- threat signature ID.
+ threat signature ID and signature type.
 
  **type**
   Signature type:
