@@ -175,7 +175,12 @@ DESCRIPTION
   Multiple instances of the option are allowed.
 
  ``--type`` *type*
-  Signature type:
+  Signature type.
+
+  Signature types are grouped into *IPS* types (Intrusion Prevention
+  System) and *Virus* types:
+
+  - *IPS*
 
    **ips** - all IPS signature metadata
 
@@ -185,13 +190,15 @@ DESCRIPTION
 
    **vulnerability** - vulnerability protection signature metadata
 
+  - *Virus*
+
    **antivirus** - anti-virus signature metadata
 
-   **dns** - DNS signature  metadata
+   **dns** - DNS signature metadata
 
    **rtdns** - real-time DNS detection entries metadata
 
-   **spywarec2** - spyware C2 signatures metadata
+   **spywarec2** - spyware C2 signature metadata
 
   Release note type:
 

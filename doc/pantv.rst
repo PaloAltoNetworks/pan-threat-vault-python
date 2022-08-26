@@ -246,8 +246,10 @@ threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toRel
  GET method.
 
  **type**
-  Signature type.  Signature types are grouped into
-  *IPS* types (Intrusion Prevention System) and *Virus* types:
+  Signature type.
+
+  Signature types are grouped into *IPS* types (Intrusion Prevention
+  System) and *Virus* types:
 
   - *IPS*
 
@@ -263,11 +265,11 @@ threats(\*, type=None, id=None, name=None, cve=None, fromReleaseDate=None, toRel
 
    **antivirus** - anti-virus signature metadata
 
-   **dns** - DNS signature  metadata
+   **dns** - DNS signature metadata
 
    **rtdns** - real-time DNS detection entries metadata
 
-   **spywarec2** - spyware C2 signatures metadata
+   **spywarec2** - spyware C2 signature metadata
  
  **id**
   Threat signature ID number.
@@ -377,9 +379,14 @@ threats2(\*, type=None, id=None, name=None, sha256=None, md5=None, data=None, qu
  specified.
 
  **type**
-  Signature type:
+  Signature type.
 
-   **ips** - IPS signature metadata
+  Signature types are grouped into *IPS* types (Intrusion Prevention
+  System) and *Virus* types:
+
+  - *IPS*
+
+   **ips** - all IPS signature metadata
 
    **fileformat** - file-format signature metadata
 
@@ -387,13 +394,15 @@ threats2(\*, type=None, id=None, name=None, sha256=None, md5=None, data=None, qu
 
    **vulnerability** - vulnerability protection signature metadata
 
+  - *Virus*
+
    **antivirus** - anti-virus signature metadata
 
-   **dns** - DNS signature  metadata
+   **dns** - DNS signature metadata
 
    **rtdns** - real-time DNS detection entries metadata
 
-   **spywarec2** - spyware C2 signatures metadata
+   **spywarec2** - spyware C2 signature metadata
 
  **id**
   List of threat signature ID numbers.
