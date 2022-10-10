@@ -40,7 +40,7 @@ SYNOPSIS
     --atp-pcaps              ATP reports pcaps API request
     --all                    get all threats
     --id id                  signature/report ID (multiple --id's allowed)
-    --name name              signature name (multiple --names's allowed)
+    --name name              signature name (multiple --name's allowed)
     --cve id                 CVE ID
     --sha256 hash            SHA-256 hash (multiple --sha256's allowed)
     --md5 hash               MD5 hash (multiple --md5's allowed)
