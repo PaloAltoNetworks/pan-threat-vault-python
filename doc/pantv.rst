@@ -731,8 +731,8 @@ SEE ALSO
  Threat Vault API Reference
   https://pan.dev/cdss/threat-vault/api/
 
- Threat Vault API Developer Documentation
-  https://pan.dev/cdss/threat-vault/docs
+ CDSS API Developer Documentation
+  https://pan.dev/cdss/docs/
 
  OpenAPI Documents
   https://github.com/PaloAltoNetworks/pan.dev/tree/master/static/cdss/threat-vault/spec
