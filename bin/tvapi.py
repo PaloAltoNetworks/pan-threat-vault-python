@@ -489,7 +489,7 @@ def parse_opts():
         'timeout': None,
         'debug': 0,
         'dtime': False,
-        }
+    }
 
     short_options = 'F:J:jOpQ:'
     long_options = [
