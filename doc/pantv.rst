@@ -735,7 +735,7 @@ SEE ALSO
   https://pan.dev/cdss/docs/
 
  OpenAPI Documents
-  https://github.com/PaloAltoNetworks/pan.dev/tree/master/static/cdss/threat-vault/spec
+  https://github.com/PaloAltoNetworks/pan.dev/tree/master/openapi-specs/threat-vault
 
 AUTHORS
 =======
