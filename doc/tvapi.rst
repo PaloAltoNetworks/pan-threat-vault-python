@@ -145,14 +145,20 @@ DESCRIPTION
 
  ``--id`` *id*
   Threat signature ID number, or Advanced Threat Protection report ID.
-  Multiple instances of the option are allowed.
+
+  Multiple instances of the option are allowed, and the argument can
+  be a path to a file containing the values, or **'-'** to specify the
+  values are to be read from *stdin*.
 
  ``--name`` *name*
   Threat signature name.  Words in *name* are used to perform a fuzzy
   match on the signature name; *name* must be at least 3 characters
   and only alphanumeric characters are allowed, other characters are
   ignored.
-  Multiple instances of the option are allowed.
+
+  Multiple instances of the option are allowed, and the argument can
+  be a path to a file containing the values, or **'-'** to specify the
+  values are to be read from *stdin*.
 
  ``--cve`` *id*
   CVE (Common Vulnerabilities and Exposures) ID.
@@ -169,11 +175,17 @@ DESCRIPTION
 
  ``--sha256`` *hash*
   Sample SHA-256 hash value.
-  Multiple instances of the option are allowed.
+
+  Multiple instances of the option are allowed, and the argument can
+  be a path to a file containing the values, or **'-'** to specify the
+  values are to be read from *stdin*.
 
  ``--md5`` *hash*
   Sample MD5 hash value.
-  Multiple instances of the option are allowed.
+
+  Multiple instances of the option are allowed, and the argument can
+  be a path to a file containing the values, or **'-'** to specify the
+  values are to be read from *stdin*.
 
  ``--type`` *type*
   Specify type for:
@@ -239,6 +251,9 @@ DESCRIPTION
 
  ``--data`` *json*
   JSON text to send in the body of the request.
+
+  *json* can be a string, a path to a file containing a JSON object,
+  or the value **-** to specify a JSON object is on *stdin*.
 
   ``--threats2`` request:
 

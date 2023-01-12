@@ -425,7 +425,7 @@ def save_pcap(body, name, dst):
     print('pcap saved to %s' % path, file=sys.stderr)
 
 
-def process_arg(arg):
+def process_arg(arg, string=False):
     stdin_char = '-'
 
     if arg == stdin_char:
@@ -438,7 +438,11 @@ def process_arg(arg):
         except IOError:
             lines = [arg]
 
-    lines = ''.join(lines)
+    if string:
+        lines = ''.join(lines)
+    else:
+        lines = [x.rstrip('\r\n') for x in lines]
+
     return lines
 
 
@@ -546,33 +550,33 @@ def parse_opts():
         elif opt == '--id':
             if options['id'] is None:
                 options['id'] = []
-            options['id'].append(arg)
+            options['id'].extend(process_arg(arg))
         elif opt == '--cve':
             options['cve'] = arg
         elif opt == '--name':
             if options['name'] is None:
                 options['name'] = []
-            options['name'].append(arg)
+            options['name'].extend(process_arg(arg))
         elif opt == '--sha256':
             if options['sha256'] is None:
                 options['sha256'] = []
-            options['sha256'].append(arg)
+            options['sha256'].extend(process_arg(arg))
         elif opt == '--md5':
             if options['md5'] is None:
                 options['md5'] = []
-            options['md5'].append(arg)
+            options['md5'].extend(process_arg(arg))
         elif opt == '--type':
             options['type'] = arg
         elif opt == '--note-version':
             options['note-version'] = arg
         elif opt == '--data':
-            options['data'] = process_arg(arg)
+            options['data'] = process_arg(arg, string=True)
         elif opt == '--offset':
             options['offset'] = arg
         elif opt == '--limit':
             options['limit'] = arg
         elif opt == '-Q':
-            options['query_strings'].append(process_arg(arg))
+            options['query_strings'].append(process_arg(arg, string=True))
         elif opt == '--verify':
             options['verify'] = opt_verify(arg)
         elif opt == '--timeout':
