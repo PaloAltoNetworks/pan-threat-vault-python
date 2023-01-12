@@ -435,7 +435,7 @@ def process_arg(arg, string=False):
             f = open(arg)
             lines = f.readlines()
             f.close()
-        except IOError:
+        except OSError:
             lines = [arg]
 
     if string:
@@ -524,7 +524,7 @@ def parse_opts():
                 with open(arg, 'r') as f:
                     x = json.load(f)
                     options['config'].update(x)
-            except (IOError, ValueError) as e:
+            except (OSError, ValueError) as e:
                 print('%s: %s' % (arg, e), file=sys.stderr)
                 sys.exit(1)
         elif opt == '--api-version':
