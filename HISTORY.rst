@@ -1,6 +1,16 @@
 Release History
 ===============
 
+0.3.0 (2023-04-30)
+------------------
+
+- Add EDL (external dynamic list) API request:
+
+    https://pan.dev/threat-vault/api/edl/
+
+  tvapi.py --note-version is deprecated for --release-notes; use
+  --content-version.
+
 0.2.0 (2023-04-04)
 ------------------
 
