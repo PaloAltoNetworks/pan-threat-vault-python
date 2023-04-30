@@ -202,13 +202,52 @@ def request(api, options):
         resp.raise_for_status()
 
     elif options['release-notes']:
+        version = (options['content-version']
+                   if options['content-version'] is not None
+                   else options['note-version'])
         resp = api.release_notes(
             type=options['type'],
-            version=options['note-version'],
+            version=version,
             query_string=options['query_string_obj'])
         print_status('release-notes', resp)
         print_response(options, resp)
         resp.raise_for_status()
+
+    elif options['edl']:
+        name = options['name'][0] if options['name'] is not None else None
+        kwargs = {
+            'name': name,
+            'version': options['content-version'],
+            'offset': options['offset'],
+            'limit': options['limit'],
+            'query_string': options['query_string_obj'],
+        }
+
+        if options['all'] and options['opt_json']:
+            # only allowed with noaio
+            kwargs['retry'] = True
+            edl = GeneratorList(generator=api.edl_all, **kwargs)
+            for x in json.JSONEncoder().iterencode(edl):
+                if options['print_json']:
+                    # XXX warn if not print_json?
+                    print(x, end='')
+
+        elif options['all']:
+            obj = {'data': []}
+            for ok, x in api.edl_all(retry=True, **kwargs):
+                if ok:
+                    obj['data'].append(x)
+                else:
+                    print_status('edl_all', x)
+                    print_response(options, x)
+                    x.raise_for_status()
+            print_json_response(options, obj)
+
+        else:
+            resp = api.edl(**kwargs)
+            print_status('edl', resp)
+            print_response(options, resp)
+            resp.raise_for_status()
 
     elif options['atp-reports']:
         resp = api.atp_reports(
@@ -291,13 +330,43 @@ async def aiorequest(api, options):
         resp.raise_for_status()
 
     elif options['release-notes']:
+        version = (options['content-version']
+                   if options['content-version'] is not None
+                   else options['note-version'])
         resp = await api.release_notes(
             type=options['type'],
-            version=options['note-version'],
+            version=version,
             query_string=options['query_string_obj'])
         print_status('release-notes', resp)
         await aioprint_response(options, resp)
         resp.raise_for_status()
+
+    elif options['edl']:
+        name = options['name'][0] if options['name'] is not None else None
+        kwargs = {
+            'name': name,
+            'version': options['content-version'],
+            'offset': options['offset'],
+            'limit': options['limit'],
+            'query_string': options['query_string_obj'],
+        }
+
+        if options['all']:
+            obj = {'data': []}
+            async for ok, x in api.edl_all(retry=True, **kwargs):
+                if ok:
+                    obj['data'].append(x)
+                else:
+                    print_status('edl_all', x)
+                    await aioprint_response(options, x)
+                    x.raise_for_status()
+            print_json_response(options, obj)
+
+        else:
+            resp = await api.edl(**kwargs)
+            print_status('edl', resp)
+            await aioprint_response(options, resp)
+            resp.raise_for_status()
 
     elif options['atp-reports']:
         resp = await api.atp_reports(
@@ -467,6 +536,7 @@ def parse_opts():
         'threats2': False,
         'threats_history': False,
         'release-notes': False,
+        'edl': False,
         'atp-reports': False,
         'atp-pcaps': False,
         'all': False,
@@ -476,7 +546,8 @@ def parse_opts():
         'sha256': None,
         'md5': None,
         'type': None,
-        'note-version': None,
+        'content-version': None,
+        'note-version': None,  # XXX deprecated
         'data': None,
         'offset': None,
         'limit': None,
@@ -499,10 +570,11 @@ def parse_opts():
     long_options = [
         'help', 'version', 'debug=', 'dtime',
         'api-version=', 'url=', 'api-key=',
-        'threats', 'threats2', 'threats-history', 'release-notes',
+        'threats', 'threats2', 'threats-history',
+        'release-notes', 'edl',
         'atp-reports', 'atp-pcaps',
         'all', 'id=', 'name=', 'cve=', 'sha256=', 'md5=',
-        'type=', 'note-version=', 'data=',
+        'type=', 'content-version=', 'note-version=', 'data=',
         'offset=', 'limit=',
         'rate-limits', 'dst=', 'verify=', 'aio', 'noaio',
         'timeout=',
@@ -541,6 +613,8 @@ def parse_opts():
             options['threats_history'] = True
         elif opt == '--release-notes':
             options['release-notes'] = True
+        elif opt == '--edl':
+            options['edl'] = True
         elif opt == '--atp-reports':
             options['atp-reports'] = True
         elif opt == '--atp-pcaps':
@@ -567,7 +641,9 @@ def parse_opts():
             options['md5'].extend(process_arg(arg))
         elif opt == '--type':
             options['type'] = arg
-        elif opt == '--note-version':
+        elif opt == '--content-version':
+            options['content-version'] = arg
+        elif opt == '--note-version':  # XXX deprecated
             options['note-version'] = arg
         elif opt == '--data':
             options['data'] = process_arg(arg, string=True)
@@ -672,43 +748,45 @@ def parse_opts():
 
 def usage():
     usage = '''%s [options]
-    --api-key key            API key
-    --threats                threats API request
-    --threats2               multiple threats bulk API request
-    --threats-history        threats release history API request
-    --release-notes          release-notes API request
-    --atp-reports            ATP reports API request
-    --atp-pcaps              ATP reports pcaps API request
-    --all                    get all threats
-    --id id                  signature/report ID (multiple --id's allowed)
-    --name name              signature name (multiple --name's allowed)
-    --cve id                 CVE ID
-    --sha256 hash            SHA-256 hash (multiple --sha256's allowed)
-    --md5 hash               MD5 hash (multiple --md5's allowed)
-    --type type              signature/release-note type
-    --note-version version   release-note version
-    --offset num             items offset
-    --limit num              number of items to return
-    -Q json                  URL query string (multiple -Q's allowed)
-    --data json              threats2, atp-reports POST data
-    --url url                API URL
-                             default %s
-    --verify opt             SSL server verify option: yes|no|path
-    --aio                    Use asyncio (default)
-    --noaio                  Don't use asyncio
-    --api-version version    API version (default %s)
-    -j                       print JSON
-    -p                       print Python
-    --rate-limits            print response header rate limits
-    --dst dst                save pcap to directory or path
-    -J expression            JMESPath expression for JSON response data
-    -O                       optimized get all with JSON only output
-    --timeout timeout        connect, read timeout
-    -F path                  JSON options (multiple -F's allowed)
-    --debug level            debug level (0-3)
-    --dtime                  add time string to debug output
-    --version                display version
-    --help                   display usage
+    --api-key key              API key
+    --threats                  threats API request
+    --threats2                 multiple threats bulk API request
+    --threats-history          threats release history API request
+    --release-notes            release-notes API request
+    --edl                      EDL (external dynamic list) API request
+    --atp-reports              ATP reports API request
+    --atp-pcaps                ATP reports pcaps API request
+    --all                      get all threats, EDL entries
+    --id id                    signature/report ID (multiple --id's allowed)
+    --name name                signature name (multiple --name's allowed)
+                               EDL name
+    --cve id                   CVE ID
+    --sha256 hash              SHA-256 hash (multiple --sha256's allowed)
+    --md5 hash                 MD5 hash (multiple --md5's allowed)
+    --type type                signature/release-note type
+    --content-version version  content version for release-notes, EDL
+    --offset num               items offset
+    --limit num                number of items to return
+    -Q json                    URL query string (multiple -Q's allowed)
+    --data json                threats2, atp-reports POST data
+    --url url                  API URL
+                               default %s
+    --verify opt               SSL server verify option: yes|no|path
+    --aio                      Use asyncio (default)
+    --noaio                    Don't use asyncio
+    --api-version version      API version (default %s)
+    -j                         print JSON
+    -p                         print Python
+    --rate-limits              print response header rate limits
+    --dst dst                  save pcap to directory or path
+    -J expression              JMESPath expression for JSON response data
+    -O                         optimized get all with JSON only output
+    --timeout timeout          connect, read timeout
+    -F path                    JSON options (multiple -F's allowed)
+    --debug level              debug level (0-3)
+    --dtime                    add time string to debug output
+    --version                  display version
+    --help                     display usage
 '''
     print(usage % (os.path.basename(sys.argv[0]),
                    DEFAULT_URL, DEFAULT_API_VERSION), end='')

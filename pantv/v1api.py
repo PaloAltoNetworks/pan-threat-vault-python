@@ -141,8 +141,12 @@ class ThreatVaultApi(mixin.Mixin):
 
         return resp
 
-    def threats_all(self,
-                    **kwargs):
+    def _all(self, *,
+             func,
+             **kwargs):
+        assert func == self.threats or func == self.edl, \
+            'func not threats() or edl()'
+
         if 'offset' not in kwargs or kwargs['offset'] is None:
             kwargs['offset'] = 0
         else:
@@ -162,22 +166,45 @@ class ThreatVaultApi(mixin.Mixin):
 
         total = 0
         while True:
-            resp = self.threats(**kwargs)
+            resp = func(**kwargs)
             if resp.status_code == 200:
                 obj = resp.json()
-                try:
-                    threats = [obj['data'][k] for k in obj['data']]
-                    count = obj['count']
-                except KeyError as e:
-                    raise ApiError('Malformed response, missing key %s' % e)
-                current = 0
-                for threat in threats:
-                    current += len(threat)
-                total += current
-                self._log(DEBUG1, 'count %d current %d total %d',
-                          count, current, total)
-                for threat in threats:
-                    for x in threat:
+                if func == self.threats:
+                    try:
+                        threats = [obj['data'][k] for k in obj['data']]
+                        count = obj['count']
+                    except KeyError as e:
+                        raise ApiError('Malformed response, '
+                                       'missing key %s' % e)
+                    current = 0
+                    for threat in threats:
+                        current += len(threat)
+                    total += current
+                    self._log(DEBUG1, 'count %d current %d total %d',
+                              count, current, total)
+                    for threat in threats:
+                        for x in threat:
+                            yield True, x
+
+                elif func == self.edl:
+                    try:
+                        if isinstance(obj['data'], list):
+                            ips = obj['data']
+                        elif (isinstance(obj['data'], dict) and
+                              'ipaddr' in obj['data']):
+                            ips = obj['data']['ipaddr']
+                        else:
+                            raise ApiError('Malformed response, '
+                                           'data not list or dict')
+                        count = obj['count']
+                    except KeyError as e:
+                        raise ApiError('Malformed response, '
+                                       'missing key %s' % e)
+                    current = len(ips)
+                    total += current
+                    self._log(DEBUG1, 'count %d current %d total %d',
+                              count, current, total)
+                    for x in ips:
                         yield True, x
 
                 if total >= count:
@@ -186,6 +213,14 @@ class ThreatVaultApi(mixin.Mixin):
                 kwargs['offset'] += limit
             else:
                 yield False, resp
+
+    def threats_all(self,
+                    **kwargs):
+        return self._all(func=self.threats, **kwargs)
+
+    def edl_all(self,
+                **kwargs):
+        return self._all(func=self.edl, **kwargs)
 
     def threats2(self, *,
                  type=None,
@@ -268,6 +303,39 @@ class ThreatVaultApi(mixin.Mixin):
                       retry=False):
         args = locals()
         path = BASE_PATH + '/release-notes'
+        url = self.url + path
+
+        params = {}
+        for x in args:
+            if (x not in ('self', 'query_string', 'retry') and
+               args[x] is not None):
+                params[x] = args[x]
+
+        if query_string is not None:
+            params.update(query_string)
+
+        kwargs = {
+            'url': url,
+            'params': params,
+        }
+
+        resp = self._request_retry(retry=retry,
+                                   func=self.session.get,
+                                   **kwargs)
+
+        return resp
+
+    def edl(self, *,
+            name=None,
+            ipaddr=None,
+            version=None,
+            listformat=None,
+            offset=None,
+            limit=None,
+            query_string=None,
+            retry=False):
+        args = locals()
+        path = BASE_PATH + '/edl'
         url = self.url + path
 
         params = {}

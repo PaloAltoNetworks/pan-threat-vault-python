@@ -89,23 +89,15 @@ DESCRIPTION
  | | Get application and threat      | release_notes()       | /service/v1/release-notes     | GET         |
  | | release note information        |                       |                               |             |
  +-----------------------------------+-----------------------+-------------------------------+-------------+
+ | | Get EDL (extended dynamic list) | edl()                 | /service/v1/edl               | GET         |
+ | | information                     |                       |                               |             |
+ +-----------------------------------+-----------------------+-------------------------------+-------------+
  | | Get Advanced Threat Prevention  | atp_reports()         | /service/v1/atp/reports       | POST        |
  | | threat report                   |                       |                               |             |
  +-----------------------------------+-----------------------+-------------------------------+-------------+
  | | Get Advanced Threat Prevention  | atp_reports_pcaps()   | /service/v1/atp/reports/pcaps | GET         |
  | | threat pcap                     |                       |                               |             |
  +-----------------------------------+-----------------------+-------------------------------+-------------+
-
- Convenience methods implemented as generator functions are provided,
- which can be used to process all items when response paging can
- occur, and which can automatically retry requests when rate limiting
- occurs:
-
- =========================   ===================
- ThreatVaultApi Method       API Resource Path
- =========================   ===================
- threats_all()               /service/v1/threats
- =========================   ===================
 
  ThreatVaultApi methods are implemented as both functions, and
  coroutines for use with the
@@ -117,6 +109,18 @@ DESCRIPTION
  is used for asyncio HTTP requests, and the
  `requests module <https://docs.python-requests.org>`_
  is used for synchronous HTTP requests.
+
+ Convenience methods implemented as generator functions and
+ asynchronous generator functions are provided, which can be used to
+ process all items when response paging can occur, and which can
+ automatically retry requests when rate limiting occurs:
+
+ =========================   ===================
+ ThreatVaultApi Method       API Resource Path
+ =========================   ===================
+ threats_all()               /service/v1/threats
+ edl_all()                   /service/v1/edl
+ =========================   ===================
 
 pantv Constants
 ---------------
@@ -130,7 +134,6 @@ pantv Constants
 
  **DEFAULT_API_VERSION**
   Default API version.
-
 
 pantv Constructor
 -----------------
@@ -352,20 +355,21 @@ threats_all()
  the ``threats()`` method until all items are returned.  Response
  paging is handled with the **offset** and **limit** specified, or a
  starting offset of 0 and limit of 1,000.  The arguments are the same
- as in the ``threats()`` method.
+ as the ``threats()`` method.
 
  The generator function yields a tuple containing:
 
-  **status**: a boolean
+ **status**: a boolean
 
-   - True: the HTTP status code of the request is 200
-   - False: the HTTP status code of the request is not 200
+ - True: the HTTP status code of the request is 200
+ - False: the HTTP status code of the request is not 200
 
-  **response**: a response item, or HTTP client library response object
+ **response**: a response item, or HTTP client library response object
 
-   - **status** is True: an object in the response ``fileformat``,
-     ``spyware`` or ``vulnerability`` list
-   - **status** is False: HTTP client library response object
+ - **status** is True: an object in the response ``fileformat``,
+   ``spyware`` or ``vulnerability`` list
+
+ - **status** is False: HTTP client library response object
 
 threats2(\*, type=None, id=None, name=None, sha256=None, md5=None, data=None, query_string=None, retry=False)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -514,6 +518,109 @@ release_notes(\*, type=None, version=None, query_string=None, retry=False)
   response header, then retry the request.  Coroutine methods use
   ``asyncio.sleep()`` to suspend and normal methods use
   ``time.sleep()``.
+
+edl(\*, name=None, ipaddr=None, version=None, listformat=None, offset=None, limit=None, query_string=None, retry=False)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ The ``edl()`` method performs the ``/edl`` API
+ request to get information about Palo Alto Networks
+ `built-in (or predefined) external dynamic lists (EDLs)
+ <https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/built-in-edls>`_.
+
+ **name**
+  EDL name:
+
+   **panw-known-ip-list** - Palo Alto Networks Known Malicious IP Addresses
+
+   **panw-highrisk-ip-list** - Palo Alto Networks High-Risk IP Addresses
+
+   **panw-torexit-ip-list** - Palo Alto Networks Tor Exit IP Addresses
+
+   **panw-bulletproof-ip-list** - Palo Alto Networks Bulletproof IP Addresses
+
+ **ipaddr**
+  EDL IP address.
+
+ **version**
+  Antivirus content version.
+
+ **listformat**
+  Response output format.  Specify **array** to provide the IP address
+  strings in a single JSON array.
+
+ **offset**
+  Numeric offset used for response paging.  The default offset is 0.
+
+ **limit**
+  Numeric number of items to return in a response.  The default
+  limit is 1,000 and the maximum is 1,000.
+
+ **query_string**
+  Dictionary of key/value pairs to be sent as additional parameters in
+  the query string of the request.  This can be used to specify API
+  request parameters not supported by the class method.
+
+ **retry**
+  Retry the request indefinitely when a request is rate limited.  When
+  a HTTP 429 status code is returned, the function will suspend
+  execution until the time specified in the ``x-minute-ratelimit-reset``
+  response header, then retry the request.  Coroutine methods use
+  ``asyncio.sleep()`` to suspend and normal methods use
+  ``time.sleep()``.
+
+ The following request argument variations are allowed:
+
+ +----------------------------+-------------------------------+
+ | Request arguments          | Result                        |
+ +============================+===============================+
+ | | **name**                 | EDL IP address list for       |
+ | | **version**              | content version               |
+ +----------------------------+-------------------------------+
+ | | **name**                 | EDL IP address list for       |
+ | | **version**              | content version as array      |
+ | | **listformat** is        | in **ipaddr**                 |
+ |   "*array*"                |                               |
+ +----------------------------+-------------------------------+
+ | | **ipaddr**               | IP address EDLs and content   |
+ |                            | version history               |
+ +----------------------------+-------------------------------+
+ | | **ipaddr**               | IP address EDLs for specific  |
+ | | **version**              | content version               |
+ +----------------------------+-------------------------------+
+
+edl_all()
+~~~~~~~~~
+
+ The ``edl_all()`` method is a generator function which executes
+ the ``edl()`` method until all items are returned.  Response
+ paging is handled with the **offset** and **limit** specified, or a
+ starting offset of 0 and limit of 1,000.  The arguments are the same
+ as the ``edl()`` method.
+
+ The generator function yields a tuple containing:
+
+ **status**: a boolean
+
+ - True: the HTTP status code of the request is 200
+ - False: the HTTP status code of the request is not 200
+
+ **response**: a response item, or HTTP client library response object
+
+ - **status** is True: an object in the response:
+
+   **data** object - when no **ipformat** argument is specified
+
+    An object with keys:
+
+    - *ipaddr*
+    - *name*
+    - *version*
+
+   **data.ipaddr** array - when the **ipformat** argument is **array**
+
+    An array of IP address strings.
+
+ - **status** is False: HTTP client library response object
 
 atp_reports(\*, id=None, data=None, query_string=None, retry=False)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

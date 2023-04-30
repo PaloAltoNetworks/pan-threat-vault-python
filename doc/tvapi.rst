@@ -31,43 +31,45 @@ SYNOPSIS
 ::
 
  tvapi.py [options]
-    --api-key key            API key
-    --threats                threats API request
-    --threats2               multiple threats bulk API request
-    --threats-history        threats release history API request
-    --release-notes          release-notes API request
-    --atp-reports            ATP reports API request
-    --atp-pcaps              ATP reports pcaps API request
-    --all                    get all threats
-    --id id                  signature/report ID (multiple --id's allowed)
-    --name name              signature name (multiple --name's allowed)
-    --cve id                 CVE ID
-    --sha256 hash            SHA-256 hash (multiple --sha256's allowed)
-    --md5 hash               MD5 hash (multiple --md5's allowed)
-    --type type              signature/release-note type
-    --note-version version   release-note version
-    --offset num             items offset
-    --limit num              number of items to return
-    -Q json                  URL query string (multiple -Q's allowed)
-    --data json              threats2, atp-reports POST data
-    --url url                API URL
-                             default https://api.threatvault.paloaltonetworks.com
-    --verify opt             SSL server verify option: yes|no|path
-    --aio                    Use asyncio (default)
-    --noaio                  Don't use asyncio
-    --api-version version    API version (default v1)
-    -j                       print JSON
-    -p                       print Python
-    --rate-limits            print response header rate limits
-    --dst dst                save pcap to directory or path
-    -J expression            JMESPath expression for JSON response data
-    -O                       optimized get all with JSON only output
-    --timeout timeout        connect, read timeout
-    -F path                  JSON options (multiple -F's allowed)
-    --debug level            debug level (0-3)
-    --dtime                  add time string to debug output
-    --version                display version
-    --help                   display usage
+    --api-key key              API key
+    --threats                  threats API request
+    --threats2                 multiple threats bulk API request
+    --threats-history          threats release history API request
+    --release-notes            release-notes API request
+    --edl                      EDL (external dynamic list) API request
+    --atp-reports              ATP reports API request
+    --atp-pcaps                ATP reports pcaps API request
+    --all                      get all threats, EDL entries
+    --id id                    signature/report ID (multiple --id's allowed)
+    --name name                signature name (multiple --name's allowed)
+                               EDL name
+    --cve id                   CVE ID
+    --sha256 hash              SHA-256 hash (multiple --sha256's allowed)
+    --md5 hash                 MD5 hash (multiple --md5's allowed)
+    --type type                signature/release-note type
+    --content-version version  content version for release-notes, EDL
+    --offset num               items offset
+    --limit num                number of items to return
+    -Q json                    URL query string (multiple -Q's allowed)
+    --data json                threats2, atp-reports POST data
+    --url url                  API URL
+                               default https://api.threatvault.paloaltonetworks.com
+    --verify opt               SSL server verify option: yes|no|path
+    --aio                      Use asyncio (default)
+    --noaio                    Don't use asyncio
+    --api-version version      API version (default v1)
+    -j                         print JSON
+    -p                         print Python
+    --rate-limits              print response header rate limits
+    --dst dst                  save pcap to directory or path
+    -J expression              JMESPath expression for JSON response data
+    -O                         optimized get all with JSON only output
+    --timeout timeout          connect, read timeout
+    -F path                    JSON options (multiple -F's allowed)
+    --debug level              debug level (0-3)
+    --dtime                    add time string to debug output
+    --version                  display version
+    --help                     display usage
 
 DESCRIPTION
 ===========
@@ -81,6 +83,7 @@ DESCRIPTION
  - Get threat prevention metadata information
  - Get threat content release and version history
  - Get application and threat release note information
+ - Get EDL (extended dynamic list) information
  - Get Advanced Threat Prevention threat report
  - Get Advanced Threat Prevention threat pcap
 
@@ -112,6 +115,12 @@ DESCRIPTION
   Perform the ``/release-notes`` API request to get application and
   threat release note information.
 
+ ``--edl``
+  Perform the ``/edl`` API
+  request to get information about Palo Alto Networks
+  `built-in (or predefined) external dynamic lists (EDLs)
+  <https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/built-in-edls>`_.
+
  ``--atp-reports``
   Perform the ``/atp/reports`` API request to get an Advanced Threat
   Prevention threat report.  One or more report IDs must be specified
@@ -125,23 +134,36 @@ DESCRIPTION
   ``reportid.pcap``; this can be changed with the ``--dst`` option.
 
  ``--all``
-  Get all threats matching the search criteria.  This uses the
-  ThreatVaultApi ``threats_all()`` method which performs the
-  ``/threats`` API request until all items are returned.
+  Get all items for ``--edl`` and ``--threats``:
 
-  The resulting object contains a *data* name, and the value is an
-  array of threat objects.
+  - EDL
 
-  ``--all`` can also be useful for data analysis because it
-  consolidates all threats into a single list; the API response body
-  object format for threats places threats into a separate object name
-  for each category of threat, which are:
+   Get all EDLs matching the search criteria.  This uses the
+   ThreatVaultApi ``edl_all()`` method which performs the ``/edl`` API
+   request until all items are returned.
 
-   **fileformat**
+   The resulting object contains a *data* name, and the value is an
+   array of all ``edl_all()`` responses.
 
-   **spyware**
+  - threats
 
-   **vulnerability**
+   Get all threats matching the search criteria.  This uses the
+   ThreatVaultApi ``threats_all()`` method which performs the
+   ``/threats`` API request until all items are returned.
+
+   The resulting object contains a *data* name, and the value is an
+   array of all ``threats_all()`` responses.
+
+   ``--all`` can also be useful for data analysis because it
+   consolidates all threats into a single list; the API response body
+   object format for threats places threats into a separate object
+   name for each category of threat, which are:
+
+    **fileformat**
+
+    **spyware**
+
+    **vulnerability**
 
  ``--id`` *id*
   Threat signature ID number, or Advanced Threat Protection report ID.
@@ -151,10 +173,25 @@ DESCRIPTION
   values are to be read from *stdin*.
 
  ``--name`` *name*
-  Threat signature name.  Words in *name* are used to perform a fuzzy
-  match on the signature name; *name* must be at least 3 characters
-  and only alphanumeric characters are allowed, other characters are
-  ignored.
+  *name* is an EDL name for ``--edl`` or threat signature name for
+  ``--threats`` and ``--threats2``:
+
+  - EDL name:
+
+   **panw-known-ip-list** - Palo Alto Networks Known Malicious IP Addresses
+
+   **panw-highrisk-ip-list** - Palo Alto Networks High-Risk IP Addresses
+
+   **panw-torexit-ip-list** - Palo Alto Networks Tor Exit IP Addresses
+
+   **panw-bulletproof-ip-list** - Palo Alto Networks Bulletproof IP Addresses
+
+  - threat signature name:
+
+   Words in a threat signature *name* are used to perform a fuzzy
+   match on the signature name; *name* must be at least 3 characters
+   and only alphanumeric characters are allowed, other characters are
+   ignored.
 
   Multiple instances of the option are allowed, and the argument can
   be a path to a file containing the values, or **'-'** to specify the
@@ -228,8 +265,8 @@ DESCRIPTION
 
    **content**
 
- ``--note-version`` *version*
-  Content version.
+ ``--content-version`` *version*
+  Content version for ``--edl`` and ``--release-notes``.
 
  ``--offset`` *num*
   Numeric offset used for response paging.  The default offset is 0.
@@ -523,6 +560,20 @@ EXAMPLES
   threats: 200 OK 943732
   1098
   closing aiohttp session
+
+ Display a count of IP addresses in each of the built-in EDLs:
+ ::
+
+   $ edls='panw-known-ip-list panw-highrisk-ip-list panw-torexit-ip-list panw-bulletproof-ip-list'
+   $ for name in `echo $edls`
+   > do
+   > echo -n "$name "
+   > tvapi.py -F /etc/tv/keys-acmecorp.json -j --edl --name $name --content-version latest --all -J 'length(data)'
+   > done
+   panw-known-ip-list 4516
+   panw-highrisk-ip-list 3295
+   panw-torexit-ip-list 1226
+   panw-bulletproof-ip-list 36
 
 SEE ALSO
 ========
