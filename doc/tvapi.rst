@@ -83,7 +83,7 @@ DESCRIPTION
  - Get threat prevention metadata information
  - Get threat content release and version history
  - Get application and threat release note information
- - Get EDL (extended dynamic list) information
+ - Get EDL (external dynamic list) information
  - Get Advanced Threat Prevention threat report
  - Get Advanced Threat Prevention threat pcap
 

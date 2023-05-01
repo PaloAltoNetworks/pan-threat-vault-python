@@ -89,7 +89,7 @@ DESCRIPTION
  | | Get application and threat      | release_notes()       | /service/v1/release-notes     | GET         |
  | | release note information        |                       |                               |             |
  +-----------------------------------+-----------------------+-------------------------------+-------------+
- | | Get EDL (extended dynamic list) | edl()                 | /service/v1/edl               | GET         |
+ | | Get EDL (external dynamic list) | edl()                 | /service/v1/edl               | GET         |
  | | information                     |                       |                               |             |
  +-----------------------------------+-----------------------+-------------------------------+-------------+
  | | Get Advanced Threat Prevention  | atp_reports()         | /service/v1/atp/reports       | POST        |
