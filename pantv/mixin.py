@@ -15,7 +15,6 @@
 #
 
 import aiohttp
-import json
 import logging
 import requests
 import requests.adapters
