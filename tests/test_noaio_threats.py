@@ -24,9 +24,11 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
         x = resp.json()
         self.assertEqual(x['message'], 'Successful')
         self.assertTrue(x['success'])
-        self.assertEqual(x['count'], 1)
+        self.assertEqual(x['count'], 2)
         item = x['data']['vulnerability'][0]
         self.assertEqual(item['id'], '30000')
+        item = x['data']['antivirus'][0]
+        self.assertEqual(item['id'], '717423992')
 
     def test_03(self):
         x = 'Adobe Reader Memory Corruption Vulnerability'
