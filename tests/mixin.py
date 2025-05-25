@@ -47,12 +47,21 @@ class _MixinShared:
                 pass
             else:
                 raise RuntimeError('PANTV_DEBUG level must be 0-3')
-
             log_format = '%(message)s'
             handler = logging.StreamHandler()
             formatter = logging.Formatter(log_format)
             handler.setFormatter(formatter)
             logger.addHandler(handler)
+
+        if x is None or debug == 0:
+            # XXX suppress for LibreSSL systems
+            import warnings
+            warnings.filterwarnings(
+                'ignore',
+                message=r'^urllib3 v2 only supports OpenSSL 1\.1\.1\+',
+                category=Warning,
+                module='urllib3'
+            )
 
         return pantv.ThreatVaultApi(**kwargs)
 

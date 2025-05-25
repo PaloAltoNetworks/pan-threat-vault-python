@@ -47,6 +47,16 @@ INDENT = 4
 def main():
     options = parse_opts()
 
+    if not options['debug']:
+        # XXX suppress for LibreSSL systems
+        import warnings
+        warnings.filterwarnings(
+            'ignore',
+            message=r'^urllib3 v2 only supports OpenSSL 1\.1\.1\+',
+            category=Warning,
+            module='urllib3'
+        )
+
     if options['debug']:
         logger = logging.getLogger()
         if options['debug'] == 3:
