@@ -22,7 +22,7 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
             'panw-known-ip-list',
             'panw-highrisk-ip-list',
             'panw-torexit-ip-list',
-            #  'panw-bulletproof-ip-list',
+            'panw-bulletproof-ip-list',
         ]
         for edl in edls:
             resp = self.api.edl(name=edl,
@@ -32,7 +32,10 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
             x = resp.json()
             self.assertEqual(x['message'], 'Successful')
             self.assertTrue(x['success'])
-            self.assertEqual(len(x['data']), 10, msg=edl)
+            if edl == 'panw-bulletproof-ip-list':
+                self.assertGreater(len(x['data']), 1, msg=edl)
+            else:
+                self.assertEqual(len(x['data']), 10, msg=edl)
 
             resp = self.api.edl(name=edl,
                                 version='latest',
@@ -42,7 +45,10 @@ class ThreatVaultApiTest(mixin.Mixin, unittest.TestCase):
             x = resp.json()
             self.assertEqual(x['message'], 'Successful')
             self.assertTrue(x['success'])
-            self.assertEqual(len(x['data']['ipaddr']), 10, msg=edl)
+            if edl == 'panw-bulletproof-ip-list':
+                self.assertGreater(len(x['data']['ipaddr']), 1, msg=edl)
+            else:
+                self.assertEqual(len(x['data']['ipaddr']), 10, msg=edl)
 
     def test_03(self):
         edl = 'panw-highrisk-ip-list'
