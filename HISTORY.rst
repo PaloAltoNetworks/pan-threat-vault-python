@@ -1,6 +1,19 @@
 Release History
 ===============
 
+0.4.0 (2025-05-26)
+------------------
+
+- Fix typo in documentation: extended -> external.
+
+- Update threats test for added antivirus id.
+
+- Add tests for edl().
+
+- urllib3 v2 emits NotOpenSSLWarning when the ssl module does not use
+  OpenSSL; suppress this in tvapi.py for debug 0 and 1.  Systems
+  including macOS and OpenBSD use LibreSSL.
+
 0.3.0 (2023-04-30)
 ------------------
 
