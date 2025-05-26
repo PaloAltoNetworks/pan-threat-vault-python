@@ -47,7 +47,7 @@ INDENT = 4
 def main():
     options = parse_opts()
 
-    if not options['debug']:
+    if options['debug'] < 2:
         # XXX suppress for LibreSSL systems
         import warnings
         warnings.filterwarnings(
