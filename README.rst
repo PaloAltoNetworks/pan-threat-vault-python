@@ -6,7 +6,7 @@ Networks
 `Threat Vault API
 <https://pan.dev/cdss/threat-vault/api/>`_.
 
-It provides a Python3
+It provides a Python
 `asyncio <https://docs.python.org/3/library/asyncio.html>`_
 and non-asyncio class and command line interface to the Threat
 Vault RESTful API.
